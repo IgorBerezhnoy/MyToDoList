@@ -1,4 +1,4 @@
-import React, {useReducer} from 'react';
+import React, {useCallback, useMemo, useReducer} from 'react';
 import './App.css';
 import {TaskType, Todolist} from './Todolist';
 import {v1} from 'uuid';
@@ -29,32 +29,32 @@ export type TasksStateType = {
     [key: string]: Array<TaskType>
 }
 
-function AppWithRedux() {
+
+const AppWithRedux = React.memo(() => {
+    console.log('app is called');
 
     let dispatch = useDispatch();
 
-
     const todolists = useSelector<AppRootState, TodolistType[]>(state => state.todolists);
 
-
-    function changeFilter(value: FilterValuesType, todolistId: string) {
+    const changeFilter = useCallback((value: FilterValuesType, todolistId: string) => {
         dispatch(changeTodolistFilterAC(todolistId, value));
-    }
+    }, [dispatch]);
 
-    function removeTodolist(id: string) {
+    const removeTodolist = useCallback((id: string) => {
 
         dispatch(removeTodolistAC(id));
 
-    }
+    }, [dispatch]);
 
-    function changeTodolistTitle(id: string, title: string) {
+    const changeTodolistTitle = useCallback((id: string, title: string) => {
 
         dispatch(changeTodolistTitleAC(id, title));
-    }
+    }, [dispatch]);
 
-    function addTodolist(title: string) {
+    const addTodolist = useCallback((title: string) => {
         dispatch(addTodolistAC(title));
-    }
+    }, [dispatch]);
 
     return (
         <div className="App">
@@ -72,6 +72,7 @@ function AppWithRedux() {
             <Container fixed>
                 <Grid container style={{padding: '20px'}}>
                     <AddItemForm addItem={addTodolist}/>
+
                 </Grid>
                 <Grid container spacing={3}>
                     {
@@ -81,7 +82,7 @@ function AppWithRedux() {
                             return <Grid key={tl.id} item>
                                 <Paper style={{padding: '10px'}}>
                                     <Todolist
-                                        key={tl.id}
+
                                         id={tl.id}
                                         title={tl.title}
                                         changeFilter={changeFilter}
@@ -97,7 +98,7 @@ function AppWithRedux() {
             </Container>
         </div>
     );
-}
+});
 
 export default AppWithRedux;
 //
