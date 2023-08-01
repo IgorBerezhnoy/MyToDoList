@@ -6,7 +6,6 @@ import {AddItemForm} from './AddItemForm';
 import {AppBar, Button, Container, Grid, Paper, Toolbar, Typography} from "@mui/material";
 import IconButton from "@mui/material/IconButton/IconButton";
 import {Menu} from "@mui/icons-material";
-import {useDispatch} from 'react-redux';
 
 
 export type FilterValuesType = "all" | "active" | "completed";
@@ -22,10 +21,6 @@ export type TasksStateType = {
 
 
 function App() {
-
-
-
-
     let todolistId1 = v1();
     let todolistId2 = v1();
 

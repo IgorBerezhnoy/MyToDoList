@@ -28,7 +28,7 @@ export type TasksStateType = {
 }
 
 
-function AppWithReducers() {
+function AppWithReducer() {
     let todolistId1 = v1();
     let todolistId2 = v1();
 
@@ -50,45 +50,46 @@ function AppWithReducers() {
 
 
     function removeTask(id: string, todolistId: string) {
-
-        dispatchToTasks(removeTaskAC(id,todolistId))
+let action=removeTaskAC(id,todolistId)
+        dispatchToTasks(action);
     }
 
     function addTask(title: string, todolistId: string) {
-
-        dispatchToTasks(addTaskAC(title,todolistId))
+        let action=addTaskAC(title,todolistId)
+        dispatchToTasks(action);
     }
 
     function changeStatus(id: string, isDone: boolean, todolistId: string) {
-
-        dispatchToTasks(changeTaskStatusAC(id,isDone,todolistId))
+        let action=changeTaskStatusAC(id,isDone,todolistId)
+        dispatchToTasks(action);
     }
 
     function changeTaskTitle(id: string, newTitle: string, todolistId: string) {
-
-        dispatchToTasks(changeTaskTitleAC(id,newTitle,todolistId))
+        let action=changeTaskTitleAC(id,newTitle,todolistId)
+        dispatchToTasks(action);
     }
 
 
     function changeFilter(value: FilterValuesType, todolistId: string) {
-        dispatchToTodolists(changeTodolistFilterAC(todolistId,value))
+        let action=changeTodolistFilterAC(todolistId,value)
+        dispatchToTodolists(action)
     }
 
     function removeTodolist(id: string) {
         let action=removeTodolistAC(id)
         dispatchToTodolists(action)
-        dispatchToTasks(action)
+        dispatchToTasks(action);
     }
 
     function changeTodolistTitle(id: string, title: string) {
-
-        dispatchToTodolists(changeTodolistTitleAC(id,title))
+        let action=changeTodolistTitleAC(id,title)
+        dispatchToTodolists(action)
     }
 
     function addTodolist(title: string) {
         let action=addTodolistAC(title)
         dispatchToTodolists(action)
-        dispatchToTasks(action)
+        dispatchToTasks(action);
     }
 
     return (
@@ -147,4 +148,4 @@ function AppWithReducers() {
     );
 }
 
-export default AppWithReducers;
+export default AppWithReducer;
