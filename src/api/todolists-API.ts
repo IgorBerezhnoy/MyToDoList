@@ -27,14 +27,28 @@ export type ResponseType<D={}> = {
     data: D
 }
 
-type TaskType = {
-    'id': string
-    'title': string,
+export enum TaskStatuses{
+    New,
+    InProgress,
+    Completed,
+    Draft
+}
+export enum TaskPriority{
+    Low,
+    Middle,
+    Hi,
+    Urgently,
+    Later
+}
+
+export type TaskType = {
+    id: string
+    title: string,
     'description': string | null,
     'todoListId': string,
     'order': number,
-    'status': number,
-    'priority': number,
+    status: TaskStatuses,
+    'priority': TaskPriority,
     'startDate': null | string,
     'deadline': null | string,
     'addedDate': string
