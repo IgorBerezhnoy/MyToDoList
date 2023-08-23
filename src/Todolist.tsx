@@ -8,7 +8,7 @@ import {Task} from './Task'
 import {TaskStatuses, TaskType} from './api/todolists-api'
 import {FilterValuesType} from './state/todolists-reducer'
 import {useDispatch} from 'react-redux';
-import {fetchTasksTc} from './state/tasks-reducer';
+import {fetchTasksTC} from './state/tasks-reducer';
 
 type PropsType = {
     id: string
@@ -31,7 +31,7 @@ export const Todolist = React.memo(function (props: PropsType) {
     const dispatch=useDispatch()
     useEffect(()=>{
 // @ts-ignore
-        dispatch(fetchTasksTc(props.id))
+        dispatch(fetchTasksTC(props.id))
     },[])
 
     const addTask = useCallback((title: string) => {
