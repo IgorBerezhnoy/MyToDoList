@@ -1,14 +1,11 @@
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback} from 'react'
 import {AddItemForm} from './AddItemForm'
 import {EditableSpan} from './EditableSpan'
-import IconButton from '@mui/material/IconButton';
-import Button from '@mui/material/Button';
-import { Delete } from '@mui/icons-material';
+import {Button, IconButton} from '@material-ui/core'
+import {Delete} from '@material-ui/icons'
 import {Task} from './Task'
 import {TaskStatuses, TaskType} from './api/todolists-api'
 import {FilterValuesType} from './state/todolists-reducer'
-import {useDispatch} from 'react-redux';
-import {fetchTasksTC} from './state/tasks-reducer';
 
 type PropsType = {
     id: string
@@ -27,12 +24,6 @@ type PropsType = {
 
 export const Todolist = React.memo(function (props: PropsType) {
     console.log('Todolist called')
-
-    const dispatch=useDispatch()
-    useEffect(()=>{
-// @ts-ignore
-        dispatch(fetchTasksTC(props.id))
-    },[])
 
     const addTask = useCallback((title: string) => {
         props.addTask(title, props.id)
@@ -78,7 +69,7 @@ export const Todolist = React.memo(function (props: PropsType) {
         <div style={{paddingTop: '10px'}}>
             <Button variant={props.filter === 'all' ? 'outlined' : 'text'}
                     onClick={onAllClickHandler}
-                    color={'inherit'}
+                    color={'default'}
             >All
             </Button>
             <Button variant={props.filter === 'active' ? 'outlined' : 'text'}
