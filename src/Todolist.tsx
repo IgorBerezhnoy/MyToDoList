@@ -4,7 +4,7 @@ import {EditableSpan} from './EditableSpan'
 import {Button, IconButton} from '@material-ui/core'
 import {Delete} from '@material-ui/icons'
 import {Task} from './Task'
-import {TaskStatuses, TaskType} from './api/todolists-api'
+import {TaskStatuses, TaskType, UpdateTaskModelType} from './api/todolists-api';
 import {FilterValuesType} from './state/todolists-reducer'
 import {useAppDispatch} from './state/store';
 import {fetchTaskTC} from './state/tasks-reducer';
@@ -16,7 +16,7 @@ type PropsType = {
     changeFilter: (value: FilterValuesType, todolistId: string) => void
     addTask: (title: string, todolistId: string) => void
     changeTaskStatus: (id: string, status: TaskStatuses, todolistId: string) => void
-    changeTaskTitle: (taskId: string, newTitle: string, todolistId: string) => void
+    changeTaskTitle: (taskId: string, title: string, todolistId: string) => void
     removeTask: (taskId: string, todolistId: string) => void
     removeTodolist: (id: string) => void
     changeTodolistTitle: (id: string, newTitle: string) => void
