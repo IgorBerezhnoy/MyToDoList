@@ -2,6 +2,7 @@ import {addTodolistAC, removeTodolistAC, setTodolistsAC} from './todolists-reduc
 import {TaskPriorities, TaskStatuses, TaskType, todolistsAPI, UpdateTaskModelType} from '../../../api/todolists-api';
 import {AppThunk} from '../../store';
 import {TasksStateType} from '../TodolistsList';
+import {setAppErrorAC, setAppStatusAC} from '../../app-reducer';
 
 
 export type ActionsTaskType = ReturnType<typeof removeTaskAC> | ReturnType<typeof addTaskAC>
@@ -68,26 +69,40 @@ export const setTaskAC = (todolistId: string, tasks: TaskType[]) => {
 };
 
 export const fetchTaskTC = (todoId: string): AppThunk => (dispatch) => {
+   dispatch(setAppStatusAC("loading"))
     todolistsAPI.getTasks(todoId)
         .then(res => {
             const action = setTaskAC(todoId, res.data.items);
             dispatch(action);
+            dispatch(setAppStatusAC("idle"))
         });
 };
 
 export const removeTaskTC = (id: string, todolistId: string): AppThunk => (dispatch) => {
     todolistsAPI.deleteTask(todolistId, id)
-        .then(() => {
+        .then((res) => {
             const action = removeTaskAC(id, todolistId);
             dispatch(action);
-        });
+        })
+
 };
 
 export const addTaskTC = (title: string, todolistId: string): AppThunk => (dispatch) => {
+    dispatch(setAppStatusAC("loading"))
     todolistsAPI.createTask(todolistId, title)
         .then(res => {
-            const action = addTaskAC(res.data.data.item);
-            dispatch(action);
+            dispatch(setAppStatusAC("idle"))
+            if (res.data.resultCode ==0){
+                const action = addTaskAC(res.data.data.item);
+                dispatch(action);
+            }else{
+                if (res.data.messages.length){
+                    dispatch(setAppErrorAC(res.data.messages[0]))
+                }else {
+                    dispatch(setAppErrorAC("Some error occurred"))
+                }
+            }
+
         });
 
 };
