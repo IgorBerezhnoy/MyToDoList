@@ -10,7 +10,11 @@ import {AppRootStateType} from './store';
 import {RequestStatusType} from './app-reducer';
 
 
-function App() {
+type AppPropsType ={
+    demo?:boolean
+}
+
+function App({demo=false,...props}:AppPropsType) {
 let status=useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
 
     return (
@@ -29,7 +33,7 @@ let status=useSelector<AppRootStateType, RequestStatusType>(state => state.app.s
             </AppBar>
             <Container fixed>
                 <ErrorSnackbar/>
-                <TodolistsList/>
+                <TodolistsList demo={demo}/>
 
             </Container>
         </div>
