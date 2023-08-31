@@ -103,7 +103,12 @@ export const addTaskTC = (title: string, todolistId: string): AppThunk => (dispa
                 }
             }
 
-        });
+        })
+        .catch((error)=>{
+
+            dispatch(setAppErrorAC(error.message))
+            dispatch(setAppStatusAC("failed"))
+        })
 
 };
 
@@ -122,11 +127,26 @@ export const updateTaskTC = (id: string, DomainModel: UpdateTaskModelDomainType,
             ...DomainModel
         };
         todolistsAPI.updateTask(todolistId, id, model)
-            .then(() => {
+            .then((res) => {
+                if(res.data.resultCode!==0){
+                    if (res.data.messages.length){
+                        dispatch(setAppErrorAC(res.data.messages[0]))
+                    }else {
+                        dispatch(setAppErrorAC("Some error occurred"))
+                    }
+                    return
+                }
                 const action = updateTaskAC(id, model, todolistId);
                 dispatch(action);
-            });
+            })
+            .catch((error)=>{
+
+                dispatch(setAppErrorAC(error.message))
+                dispatch(setAppStatusAC("failed"))
+            })
+
     }
+
 };
 
 
