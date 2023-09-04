@@ -3,6 +3,7 @@ import {TaskPriorities, TaskStatuses, TaskType, todolistsAPI, UpdateTaskModelTyp
 import {AppThunk} from '../../store';
 import {TasksStateType} from '../TodolistsList';
 import {setAppErrorAC, setAppStatusAC} from '../../app-reducer';
+import {handelServerAppError, handelServerNetworkError} from '../../../utils/error-utils';
 
 
 export type ActionsTaskType = ReturnType<typeof removeTaskAC> | ReturnType<typeof addTaskAC>
@@ -96,18 +97,13 @@ export const addTaskTC = (title: string, todolistId: string): AppThunk => (dispa
                 const action = addTaskAC(res.data.data.item);
                 dispatch(action);
             }else{
-                if (res.data.messages.length){
-                    dispatch(setAppErrorAC(res.data.messages[0]))
-                }else {
-                    dispatch(setAppErrorAC("Some error occurred"))
-                }
+                handelServerAppError(res.data,dispatch)
+
             }
 
         })
         .catch((error)=>{
-
-            dispatch(setAppErrorAC(error.message))
-            dispatch(setAppStatusAC("failed"))
+            handelServerNetworkError(error,dispatch)
         })
 
 };
@@ -129,20 +125,14 @@ export const updateTaskTC = (id: string, DomainModel: UpdateTaskModelDomainType,
         todolistsAPI.updateTask(todolistId, id, model)
             .then((res) => {
                 if(res.data.resultCode!==0){
-                    if (res.data.messages.length){
-                        dispatch(setAppErrorAC(res.data.messages[0]))
-                    }else {
-                        dispatch(setAppErrorAC("Some error occurred"))
-                    }
+                    handelServerAppError(res.data,dispatch)
                     return
                 }
                 const action = updateTaskAC(id, model, todolistId);
                 dispatch(action);
             })
             .catch((error)=>{
-
-                dispatch(setAppErrorAC(error.message))
-                dispatch(setAppStatusAC("failed"))
+                handelServerNetworkError(error,dispatch)
             })
 
     }
