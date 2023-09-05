@@ -10,6 +10,7 @@ export type ActionsTaskType = ReturnType<typeof removeTaskAC> | ReturnType<typeo
     | ReturnType<typeof updateTaskAC>
     | ReturnType<typeof removeTodolistAC> | ReturnType<typeof addTodolistAC>
     | ReturnType<typeof setTodolistsAC> | ReturnType<typeof setTaskAC>
+    | ReturnType<typeof setDisabledTaskAC>
 
 const initialState: TasksStateType = {};
 
@@ -19,7 +20,10 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
             return {...state, [action.todolistId]: state[action.todolistId].filter(t => t.id != action.taskId)};
         }
         case 'ADD-TASK': {
-            return {...state, [action.task.todoListId]: [action.task, ...state[action.task.todoListId]]};
+            return {
+                ...state,
+                [action.task.todoListId]: [{...action.task, isDisabled: false}, ...state[action.task.todoListId]]
+            };
         }
         case 'UPDATE-TASK': {
             return {
@@ -46,7 +50,16 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
             return copyState;
         }
         case 'SET-TASK': {
-            return {...state, [action.todolistId]: action.tasks};
+            return {...state, [action.todolistId]: action.tasks.map(el => ({...el, isDisabled: false}))};
+        }
+        case 'DISABLE-TASK': {
+            return {
+                ...state,
+                [action.todolistId]: [...state[action.todolistId].map(el => el.id === action.tasksId ? {
+                    ...el,
+                    isDisabled: action.isDisabled
+                } : el)]
+            };
         }
         default:
             return state;
@@ -68,49 +81,57 @@ export const updateTaskAC = (taskId: string, task: UpdateTaskModelType, todolist
 export const setTaskAC = (todolistId: string, tasks: TaskType[]) => {
     return {type: 'SET-TASK', todolistId, tasks} as const;
 };
+export const setDisabledTaskAC = (todolistId: string, tasksId: string, isDisabled: boolean) => {
+    return {type: 'DISABLE-TASK', todolistId, tasksId, isDisabled} as const;
+};
 
 export const fetchTaskTC = (todoId: string): AppThunk => (dispatch) => {
-   dispatch(setAppStatusAC("loading"))
+    dispatch(setAppStatusAC('loading'));
     todolistsAPI.getTasks(todoId)
         .then(res => {
             const action = setTaskAC(todoId, res.data.items);
             dispatch(action);
-            dispatch(setAppStatusAC("idle"))
+            dispatch(setAppStatusAC('idle'));
         });
 };
 
 export const removeTaskTC = (id: string, todolistId: string): AppThunk => (dispatch) => {
+    dispatch(setDisabledTaskAC(todolistId,id,true))
+
     todolistsAPI.deleteTask(todolistId, id)
         .then((res) => {
             const action = removeTaskAC(id, todolistId);
             dispatch(action);
-        })
+            dispatch(setDisabledTaskAC(todolistId,id,false))
+
+        });
 
 };
 
 export const addTaskTC = (title: string, todolistId: string): AppThunk => (dispatch) => {
-    dispatch(setAppStatusAC("loading"))
+    dispatch(setAppStatusAC('loading'));
     todolistsAPI.createTask(todolistId, title)
         .then(res => {
-            dispatch(setAppStatusAC("idle"))
-            if (res.data.resultCode ==0){
+            dispatch(setAppStatusAC('idle'));
+            if (res.data.resultCode == 0) {
                 const action = addTaskAC(res.data.data.item);
                 dispatch(action);
-            }else{
-                handelServerAppError(res.data,dispatch)
+            } else {
+                handelServerAppError(res.data, dispatch);
 
             }
 
         })
-        .catch((error)=>{
-            handelServerNetworkError(error,dispatch)
-        })
+        .catch((error) => {
+            handelServerNetworkError(error, dispatch);
+        });
 
 };
 
 
 export const updateTaskTC = (id: string, DomainModel: UpdateTaskModelDomainType, todolistId: string): AppThunk => (dispatch, getState) => {
     const state = getState();
+    dispatch(setDisabledTaskAC(todolistId,id,true))
     const task = state.tasks[todolistId].find(t => t.id === id);
     if (task) {
         let model: UpdateTaskModelType = {
@@ -124,16 +145,19 @@ export const updateTaskTC = (id: string, DomainModel: UpdateTaskModelDomainType,
         };
         todolistsAPI.updateTask(todolistId, id, model)
             .then((res) => {
-                if(res.data.resultCode!==0){
-                    handelServerAppError(res.data,dispatch)
-                    return
+                if (res.data.resultCode !== 0) {
+                    handelServerAppError(res.data, dispatch);
+                    return;
                 }
                 const action = updateTaskAC(id, model, todolistId);
                 dispatch(action);
+                dispatch(setDisabledTaskAC(todolistId,id,false))
             })
-            .catch((error)=>{
-                handelServerNetworkError(error,dispatch)
-            })
+            .catch((error) => {
+                handelServerNetworkError(error, dispatch);
+                dispatch(setDisabledTaskAC(todolistId,id,false))
+
+            });
 
     }
 

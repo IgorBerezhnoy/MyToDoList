@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {RequestStatusType} from '../app/app-reducer';
 
 const settings = {
     withCredentials: true,
@@ -52,7 +53,7 @@ export type TodolistType = {
     order: number
 }
 
-type ResponseType<D = {}> = {
+export type ResponseType<D = {}> = {
     resultCode: number
     messages: Array<string>
     data: D
@@ -85,6 +86,8 @@ export type TaskType = {
     order: number
     addedDate: string
 }
+export type TaskDomainType = TaskType& { isDisabled: boolean }
+
 
 export type UpdateTaskModelType = {
     title: string

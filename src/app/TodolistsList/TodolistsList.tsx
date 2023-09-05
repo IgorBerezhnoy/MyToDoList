@@ -1,4 +1,4 @@
-import {TaskStatuses, TaskType} from '../../api/todolists-api';
+import {TaskDomainType, TaskStatuses, TaskType} from '../../api/todolists-api';
 import React, {useCallback, useEffect} from 'react';
 import {
     addTodolistTC,
@@ -15,9 +15,15 @@ import {addTaskTC, removeTaskTC, updateTaskTC} from './Todolist/tasks-reducer';
 import {Grid, Paper} from '@material-ui/core';
 import {AddItemForm} from '../../components/AddItemForm/AddItemForm';
 import {Todolist} from './Todolist/Todolist';
+import {RequestStatusType} from '../app-reducer';
 
 export type TasksStateType = {
-    [key: string]: Array<TaskType>
+    [key: string]: Array<TaskDomainType>
+}
+
+
+export type TasksDomainStateType = {
+    [key: string]: Array<TaskDomainType>
 }
 
 type TodolistsListPropsType={
@@ -33,7 +39,7 @@ export const TodolistsList = ({demo=false,...props}:TodolistsListPropsType) => {
     }, []);
 
     const todolists = useSelector<AppRootStateType, Array<TodolistDomainType>>(state => state.todolists);
-    const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks);
+    const tasks = useSelector<AppRootStateType, TasksDomainStateType>(state => state.tasks);
     const dispatch = useAppDispatch();
 
     const removeTask = useCallback(function (id: string, todolistId: string) {

@@ -4,14 +4,14 @@ import {EditableSpan} from '../../../components/EditableSpan/EditableSpan';
 import {Button, IconButton} from '@material-ui/core';
 import {Delete} from '@material-ui/icons';
 import {Task} from './Task';
-import {TaskStatuses, TaskType} from '../../../api/todolists-api';
+import {TaskDomainType, TaskStatuses, TaskType} from '../../../api/todolists-api';
 import {FilterValuesType, TodolistDomainType} from './todolists-reducer';
 import {useAppDispatch} from '../../store';
 import {fetchTaskTC} from './tasks-reducer';
 
 type PropsType = {
 
-    tasks: Array<TaskType>
+    tasks: Array<TaskDomainType>
     changeFilter: (value: FilterValuesType, todolistId: string) => void
     addTask: (title: string, todolistId: string) => void
     changeTaskStatus: (id: string, status: TaskStatuses, todolistId: string) => void
