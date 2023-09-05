@@ -1,6 +1,8 @@
 import {todolistsAPI, TodolistType} from '../../../api/todolists-api';
 import {AppThunk} from '../../store';
 import {RequestStatusType, setAppStatusAC} from '../../app-reducer';
+import {handelServerAppError, handelServerNetworkError} from '../../../utils/error-utils';
+import {setIsLoggedInAS} from '../../../feachers/Login/auth-reducer';
 
 export type ActionsTodolistsType = ReturnType<typeof removeTodolistAC> | ReturnType<typeof addTodolistAC>
     | ReturnType<typeof changeTodolistTitleAC>
@@ -72,10 +74,16 @@ export const fetchTodolistsTC = (): AppThunk => (dispatch) => {
 
     todolistsAPI.getTodolists()
         .then(res => {
-            const action = setTodolistsAC(res.data);
-            dispatch(action);
+                dispatch(setTodolistsAC(res.data));
+        })
+        .catch((error) => {
+            handelServerNetworkError(error, dispatch);
+        })
+        .finally(() => {
             dispatch(setAppStatusAC('idle'));
         });
+
+            ;
 };
 export const removeTodolistTC = (todolistId: string): AppThunk => (dispatch) => {
     dispatch(setAppStatusAC('loading'));

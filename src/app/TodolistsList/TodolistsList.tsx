@@ -16,6 +16,7 @@ import {Grid, Paper} from '@material-ui/core';
 import {AddItemForm} from '../../components/AddItemForm/AddItemForm';
 import {Todolist} from './Todolist/Todolist';
 import {RequestStatusType} from '../app-reducer';
+import {Navigate} from 'react-router-dom';
 
 export type TasksStateType = {
     [key: string]: Array<TaskDomainType>
@@ -30,16 +31,19 @@ type TodolistsListPropsType={
     demo?:boolean
 }
 export const TodolistsList = ({demo=false,...props}:TodolistsListPropsType) => {
-    useEffect(() => {
-        if (demo){
-            return
-        }
-        dispatch(fetchTodolistsTC());
-
-    }, []);
 
     const todolists = useSelector<AppRootStateType, Array<TodolistDomainType>>(state => state.todolists);
     const tasks = useSelector<AppRootStateType, TasksDomainStateType>(state => state.tasks);
+    const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn);
+    useEffect(() => {
+        if (demo||!isLoggedIn){
+            return
+        }
+        dispatch(fetchTodolistsTC());
+    }, []);
+
+
+
     const dispatch = useAppDispatch();
 
     const removeTask = useCallback(function (id: string, todolistId: string) {
@@ -80,6 +84,9 @@ export const TodolistsList = ({demo=false,...props}:TodolistsListPropsType) => {
         dispatch(addTodolistTC(title));
     }, [dispatch]);
 
+    if (!isLoggedIn){
+        return   <Navigate to={"/login"}/>
+    }
     return (<><Grid container style={{padding: '20px'}}>
         <AddItemForm addItem={addTodolist}/>
     </Grid>

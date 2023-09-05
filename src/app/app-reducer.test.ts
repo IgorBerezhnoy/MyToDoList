@@ -6,7 +6,8 @@ let startState: StateAppReducerType;
 beforeEach(() => {
     startState = {
         status: 'idle',
-        error: 'null'
+        error: 'null',
+        isInitialized:false
     };
 });
 
