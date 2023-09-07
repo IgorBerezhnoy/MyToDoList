@@ -1,6 +1,7 @@
 import {todolistsApi, TodolistType} from '../../../api/todolists-api';
 import {AppThunk} from '../../store';
 import {appSetStatusAC, RequestStatusType} from '../../app-reducer';
+import {handleServerNetworkError} from '../../../utils/error-utils';
 
 export type ActionsTodolistsType = ReturnType<typeof removeTodolistAC> | ReturnType<typeof addTodolistAC>
     | ReturnType<typeof changeTodolistTitleAC>
@@ -77,6 +78,9 @@ export const fetchTodolistsTC = (): AppThunk => (dispatch) => {
             const action = setTodolistsAC(res.data);
             dispatch(action);
         })
+        .catch(error => {
+            handleServerNetworkError(error,dispatch)
+        })
         .finally(()=>{
             dispatch(appSetStatusAC("succeeded"))
             }
@@ -90,6 +94,9 @@ export const removeTodolistTC = (todolistId: string): AppThunk => (dispatch) => 
             const action = removeTodolistAC(todolistId);
             dispatch(action);
         })
+        .catch(error => {
+            handleServerNetworkError(error,dispatch)
+        })
         .finally(()=>{
             dispatch(appSetStatusAC("succeeded"))
         })
@@ -100,6 +107,9 @@ export const addTodolistTC = (title: string): AppThunk => (dispatch) => {
         .then(res => {
             const action = addTodolistAC(res.data.data.item);
             dispatch(action);
+        })
+        .catch(error => {
+            handleServerNetworkError(error,dispatch)
         })
         .finally(()=>{
             dispatch(appSetStatusAC("succeeded"))
@@ -112,6 +122,9 @@ export const changeTodolistTitleTC = (id: string, title: string): AppThunk => (d
         .then(() => {
             const action = changeTodolistTitleAC(id, title);
             dispatch(action);
+        })
+        .catch(error => {
+            handleServerNetworkError(error,dispatch)
         })
         .finally(()=>{
             dispatch(appSetStatusAC("succeeded"))

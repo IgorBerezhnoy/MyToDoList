@@ -3,6 +3,7 @@ import {TaskPriorities, TaskStatuses, TaskType, todolistsApi, UpdateTaskModelTyp
 import {AppThunk} from '../../store';
 import {TasksStateType} from '../TodolistsList';
 import {appSetErrorAC, appSetStatusAC} from '../../app-reducer';
+import {handleServerAppError, handleServerNetworkError} from '../../../utils/error-utils';
 
 
 export type ActionsTaskType = ReturnType<typeof removeTaskAC> | ReturnType<typeof addTaskAC>
@@ -75,6 +76,9 @@ export const fetchTaskTC = (todoId: string): AppThunk => (dispatch) => {
             const action = setTaskAC(todoId, res.data.items);
             dispatch(action);
         })
+        .catch(error => {
+            handleServerNetworkError(error, dispatch);
+        })
         .finally(() => {
             dispatch(appSetStatusAC('succeeded'));
         });
@@ -88,13 +92,13 @@ export const removeTaskTC = (id: string, todolistId: string): AppThunk => (dispa
                 const action = removeTaskAC(id, todolistId);
                 dispatch(action);
             } else {
-                if (res.data.messages.length) {
-                    dispatch(appSetErrorAC(res.data.messages[0]));
-                } else {
-                    dispatch(appSetErrorAC('some error'));
-                }
+                handleServerAppError(res.data, dispatch);
             }
         })
+        .catch(error => {
+            handleServerNetworkError(error, dispatch);
+        })
+
         .finally(() => {
             dispatch(appSetStatusAC('succeeded'));
         });
@@ -108,12 +112,11 @@ export const addTaskTC = (title: string, todolistId: string): AppThunk => (dispa
                 const action = addTaskAC(res.data.data.item);
                 dispatch(action);
             } else {
-                if (res.data.messages.length) {
-                    dispatch(appSetErrorAC(res.data.messages[0]));
-                } else {
-                    dispatch(appSetErrorAC('some error'));
-                }
+                handleServerAppError(res.data, dispatch);
             }
+        })
+        .catch(error => {
+            handleServerNetworkError(error, dispatch);
         })
         .finally(() => {
             dispatch(appSetStatusAC('succeeded'));
@@ -141,12 +144,11 @@ export const updateTaskTC = (id: string, DomainModel: UpdateTaskModelDomainType,
                     const action = updateTaskAC(id, model, todolistId);
                     dispatch(action);
                 } else {
-                    if (res.data.messages.length) {
-                        dispatch(appSetErrorAC(res.data.messages[0]));
-                    } else {
-                        dispatch(appSetErrorAC('some error'));
-                    }
+                    handleServerAppError(res.data, dispatch);
                 }
+            })
+            .catch(error => {
+                handleServerNetworkError(error, dispatch);
             })
             .finally(() => {
                 dispatch(appSetStatusAC('succeeded'));

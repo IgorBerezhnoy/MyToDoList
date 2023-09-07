@@ -22,7 +22,7 @@ export type AppActionsType = ActionsTodolistsType | ActionsTaskType | AppReducer
 
 export type ThunkType = ThunkDispatch<AppRootStateType, unknown, AppActionsType>
 export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, AppRootStateType, unknown, AppActionsType>
-type DispatchFunc = () => ThunkType
+export type DispatchFunc = () => ThunkType
 export const useAppDispatch: DispatchFunc = useDispatch;
 // а это, чтобы можно было в консоли браузера обращаться к store в любой момент
 // @ts-ignore
