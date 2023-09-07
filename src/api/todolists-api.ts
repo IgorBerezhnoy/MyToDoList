@@ -13,18 +13,22 @@ const instance = axios.create({
 });
 
 
-export const todolistsAPI = {
+export const todolistsApi = {
     getTodolists() {
-        return instance.get<TodolistType[]>('todo-lists');
+        const promise = instance.get<TodolistType[]>('todo-lists');
+        return promise;
     },
     createTodolist(title: string) {
-        return instance.post<ResponseType<{ item: TodolistType }>>('todo-lists', {title: title});
+        const promise = instance.post<ResponseType<{ item: TodolistType }>>('todo-lists', {title: title});
+        return promise;
     },
     deleteTodolist(id: string) {
-        return instance.delete<ResponseType>(`todo-lists/${id}`);
+        const promise = instance.delete<ResponseType>(`todo-lists/${id}`);
+        return promise;
     },
     updateTodolist(id: string, title: string) {
-        return instance.put<ResponseType>(`todo-lists/${id}`, {title: title});
+        const promise = instance.put<ResponseType>(`todo-lists/${id}`, {title: title});
+        return promise;
     },
     getTasks(todolistId: string) {
         return instance.get<GetTasksResponse>(`todo-lists/${todolistId}/tasks`);
@@ -40,21 +44,6 @@ export const todolistsAPI = {
     }
 };
 
-export type LoginParamsType = {
-    email: string, password: string, rememberMe: boolean, captcha?: string
-}
-export const authApi = {
-    login(data: LoginParamsType) {
-        return instance.post<ResponseType<{ userId: number }>>('auth/login', data);
-    },
-    logOut() {
-        return instance.delete<ResponseType>('auth/login');
-    },
-    authMe() {
-        return instance.get<ResponseType<{ id: number, email: string, login: string }>>('auth/me');
-    }
-};
-
 
 export type TodolistType = {
     id: string
@@ -63,7 +52,7 @@ export type TodolistType = {
     order: number
 }
 
-export type ResponseType<D = {}> = {
+type ResponseType<D = {}> = {
     resultCode: number
     messages: Array<string>
     data: D
@@ -96,8 +85,6 @@ export type TaskType = {
     order: number
     addedDate: string
 }
-export type TaskDomainType = TaskType & { isDisabled: boolean }
-
 
 export type UpdateTaskModelType = {
     title: string

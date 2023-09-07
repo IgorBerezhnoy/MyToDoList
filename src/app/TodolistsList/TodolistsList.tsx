@@ -1,4 +1,4 @@
-import {TaskDomainType, TaskStatuses, TaskType} from '../../api/todolists-api';
+import {TaskStatuses, TaskType} from '../../api/todolists-api' ;
 import React, {useCallback, useEffect} from 'react';
 import {
     addTodolistTC,
@@ -15,35 +15,21 @@ import {addTaskTC, removeTaskTC, updateTaskTC} from './Todolist/tasks-reducer';
 import {Grid, Paper} from '@material-ui/core';
 import {AddItemForm} from '../../components/AddItemForm/AddItemForm';
 import {Todolist} from './Todolist/Todolist';
-import {RequestStatusType} from '../app-reducer';
-import {Navigate} from 'react-router-dom';
 
 export type TasksStateType = {
-    [key: string]: Array<TaskDomainType>
+    [key: string]: Array<TaskType>
 }
+type PropsType = { demo?: boolean }
 
-
-export type TasksDomainStateType = {
-    [key: string]: Array<TaskDomainType>
-}
-
-type TodolistsListPropsType={
-    demo?:boolean
-}
-export const TodolistsList = ({demo=false,...props}:TodolistsListPropsType) => {
-
-    const todolists = useSelector<AppRootStateType, Array<TodolistDomainType>>(state => state.todolists);
-    const tasks = useSelector<AppRootStateType, TasksDomainStateType>(state => state.tasks);
-    const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn);
+export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
     useEffect(() => {
-        if (demo||!isLoggedIn){
-            return
+        if (!demo) {
+            dispatch(fetchTodolistsTC());
         }
-        dispatch(fetchTodolistsTC());
     }, []);
 
-
-
+    const todolists = useSelector<AppRootStateType, Array<TodolistDomainType>>(state => state.todolists);
+    const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks);
     const dispatch = useAppDispatch();
 
     const removeTask = useCallback(function (id: string, todolistId: string) {
@@ -84,11 +70,8 @@ export const TodolistsList = ({demo=false,...props}:TodolistsListPropsType) => {
         dispatch(addTodolistTC(title));
     }, [dispatch]);
 
-    if (!isLoggedIn){
-        return   <Navigate to={"/login"}/>
-    }
     return (<><Grid container style={{padding: '20px'}}>
-        <AddItemForm addItem={addTodolist}/>
+        <AddItemForm addItem={addTodolist} />
     </Grid>
         <Grid container spacing={3}>
             {
@@ -98,7 +81,7 @@ export const TodolistsList = ({demo=false,...props}:TodolistsListPropsType) => {
                     return <Grid item key={tl.id}>
                         <Paper style={{padding: '10px'}}>
                             <Todolist
-                             todolist={tl}
+                                todolist={tl}
                                 tasks={allTodolistTasks}
                                 removeTask={removeTask}
                                 changeFilter={changeFilter}
