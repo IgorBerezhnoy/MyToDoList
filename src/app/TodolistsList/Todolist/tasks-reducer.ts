@@ -2,7 +2,7 @@ import {addTodolistAC, removeTodolistAC, setTodolistsAC} from './todolists-reduc
 import {TaskPriorities, TaskStatuses, TaskType, todolistsApi, UpdateTaskModelType} from '../../../api/todolists-api';
 import {AppThunk} from '../../store';
 import {TasksStateType} from '../TodolistsList';
-import {appSetErrorAC, appSetStatusAC} from '../../app-reducer';
+import {appSetStatusAC} from '../../app-reducer';
 import {handleServerAppError, handleServerNetworkError} from '../../../utils/error-utils';
 
 

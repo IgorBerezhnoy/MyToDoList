@@ -15,6 +15,7 @@ import {addTaskTC, removeTaskTC, updateTaskTC} from './Todolist/tasks-reducer';
 import {Grid, Paper} from '@material-ui/core';
 import {AddItemForm} from '../../components/AddItemForm/AddItemForm';
 import {Todolist} from './Todolist/Todolist';
+import {Navigate} from 'react-router-dom';
 
 export type TasksStateType = {
     [key: string]: Array<TaskType>
@@ -22,13 +23,17 @@ export type TasksStateType = {
 type PropsType = { demo?: boolean }
 
 export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
+    let isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn);
+
     useEffect(() => {
-        if (!demo) {
+        if (!demo || !isLoggedIn) {
             dispatch(fetchTodolistsTC());
         }
     }, []);
 
+
     const todolists = useSelector<AppRootStateType, Array<TodolistDomainType>>(state => state.todolists);
+
     const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks);
     const dispatch = useAppDispatch();
 
@@ -70,8 +75,12 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
         dispatch(addTodolistTC(title));
     }, [dispatch]);
 
+    if (!isLoggedIn) {
+        return <Navigate to={'login'}/>;
+    }
+
     return (<><Grid container style={{padding: '20px'}}>
-        <AddItemForm addItem={addTodolist} />
+        <AddItemForm addItem={addTodolist}/>
     </Grid>
         <Grid container spacing={3}>
             {

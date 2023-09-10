@@ -4,7 +4,8 @@ let startState:InitialStateType
 beforeEach(() => {
     startState={
        status:'loading',
-       error: null
+       error: null,
+        initialized:false
    }
 });
 
