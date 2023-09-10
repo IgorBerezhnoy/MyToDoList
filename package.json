@@ -1,4 +1,5 @@
 {
+  "homepage": "https://IgorBerezhnoy.github.io/ToDoListWithDimych--",
   "name": "1-lesson",
   "version": "0.1.0",
   "private": true,
@@ -48,7 +49,9 @@
     "storybook": "storybook dev -p 9009",
     "build-storybook": "storybook build",
     "jest:integration": "jest -c integration/jest.config.js",
-    "test:integration": "start-server-and-test storybook http-get://localhost:9009 jest:integration"
+    "test:integration": "start-server-and-test storybook http-get://localhost:9009 jest:integration",
+    "predeploy": "yarn run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
