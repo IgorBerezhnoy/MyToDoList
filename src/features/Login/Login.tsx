@@ -22,6 +22,7 @@ export const Login = () => {
     let dispatch = useAppDispatch();
     let isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn);
 
+    console.log(isLoggedIn);
     const formik = useFormik({
         initialValues: {
             email: '',

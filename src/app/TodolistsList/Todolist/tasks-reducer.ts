@@ -70,7 +70,7 @@ export const setTaskAC = (todolistId: string, tasks: TaskType[]) => {
 };
 
 export const fetchTaskTC = (todoId: string): AppThunk => (dispatch) => {
-    dispatch(appSetStatusAC('loading'));
+    dispatch(appSetStatusAC({status:'loading'}));
     todolistsApi.getTasks(todoId)
         .then(res => {
             const action = setTaskAC(todoId, res.data.items);
@@ -80,12 +80,12 @@ export const fetchTaskTC = (todoId: string): AppThunk => (dispatch) => {
             handleServerNetworkError(error, dispatch);
         })
         .finally(() => {
-            dispatch(appSetStatusAC('succeeded'));
+            dispatch(appSetStatusAC({status:'succeeded'}));
         });
 };
 
 export const removeTaskTC = (id: string, todolistId: string): AppThunk => (dispatch) => {
-    dispatch(appSetStatusAC('loading'));
+    dispatch(appSetStatusAC({status:'loading'}));
     todolistsApi.deleteTask(todolistId, id)
         .then((res) => {
             if (res.data.resultCode === 0) {
@@ -100,12 +100,12 @@ export const removeTaskTC = (id: string, todolistId: string): AppThunk => (dispa
         })
 
         .finally(() => {
-            dispatch(appSetStatusAC('succeeded'));
+            dispatch(appSetStatusAC({status:'succeeded'}));
         });
 };
 
 export const addTaskTC = (title: string, todolistId: string): AppThunk => (dispatch) => {
-    dispatch(appSetStatusAC('loading'));
+    dispatch(appSetStatusAC({status:'loading'}));
     todolistsApi.createTask(todolistId, title)
         .then(res => {
             if (res.data.resultCode === 0) {
@@ -119,13 +119,13 @@ export const addTaskTC = (title: string, todolistId: string): AppThunk => (dispa
             handleServerNetworkError(error, dispatch);
         })
         .finally(() => {
-            dispatch(appSetStatusAC('succeeded'));
+            dispatch(appSetStatusAC({status:'succeeded'}));
         });
 };
 
 
 export const updateTaskTC = (id: string, DomainModel: UpdateTaskModelDomainType, todolistId: string): AppThunk => (dispatch, getState) => {
-    dispatch(appSetStatusAC('loading'));
+    dispatch(appSetStatusAC({status:'loading'}));
     const state = getState();
     const task = state.tasks[todolistId].find(t => t.id === id);
     if (task) {
@@ -151,7 +151,7 @@ export const updateTaskTC = (id: string, DomainModel: UpdateTaskModelDomainType,
                 handleServerNetworkError(error, dispatch);
             })
             .finally(() => {
-                dispatch(appSetStatusAC('succeeded'));
+                dispatch(appSetStatusAC({status:'succeeded'}));
             });
     }
 };

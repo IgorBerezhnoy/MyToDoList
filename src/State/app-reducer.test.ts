@@ -10,12 +10,12 @@ beforeEach(() => {
 });
 
 test('correct error should be removed', () => {
-    const endState = appReducer(startState, appSetErrorAC("null"));
+    const endState = appReducer(startState, appSetErrorAC({error:"null"}));
 
     expect(endState.error).toBe("null");
 });
 test('correct status should be removed', () => {
-    const endState = appReducer(startState, appSetStatusAC("idle"));
+    const endState = appReducer(startState, appSetStatusAC({status:"idle"}));
 
     expect(endState.status).toBe("idle");
 });
