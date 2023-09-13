@@ -13,7 +13,7 @@ const initialState = {
 };
 
 const slice = createSlice({
-    name: 'auth',
+    name: 'app',
     initialState: initialState,
     reducers: {
         appSetStatusAC(state, action: PayloadAction<{ status: RequestStatusType }>) {

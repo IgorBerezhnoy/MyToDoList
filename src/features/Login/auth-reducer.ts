@@ -60,7 +60,7 @@ export const logOutTC = (): AppThunk => (dispatch) => {
     authApi.logOut()
         .then((res) => {
             if (res.data.resultCode === 0) {
-                dispatch(setIsLoggedInAC({isLoggedIn: true}));
+                dispatch(setIsLoggedInAC({isLoggedIn: false}));
             } else {
                 handleServerAppError(res.data, dispatch);
             }
