@@ -47,6 +47,9 @@ const slice = createSlice({
         setTodolistsAC(state, action: PayloadAction<{ todolists: TodolistType[] }>) {
             return action.payload.todolists.map(el => ({...el, filter: 'all', entityStatus: 'idle'}));
         },
+        clearDataAC() {
+            return [];
+        },
     },
 });
 
@@ -58,7 +61,8 @@ export const {
         changeTodolistTitleAC,
         changeTodolistFilterAC,
         changeTodolistEntityStatusAC,
-        setTodolistsAC
+        setTodolistsAC,
+    clearDataAC
     } = slice.actions
 //     (state: Array<TodolistDomainType> = initialState, action: ActionsTodolistsType): Array<TodolistDomainType> => {
 //     switch (action.type) {
@@ -181,3 +185,4 @@ export type ActionsTodolistsType = ReturnType<typeof removeTodolistAC> | ReturnT
     | ReturnType<typeof changeTodolistFilterAC>
     | ReturnType<typeof setTodolistsAC>
     | ReturnType<typeof changeTodolistEntityStatusAC>
+    | ReturnType<typeof clearDataAC>

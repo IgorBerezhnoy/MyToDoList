@@ -3,6 +3,7 @@ import {appSetStatusAC} from '../../app/app-reducer';
 import {authApi, LoginParamsType} from '../../api/todolists-api';
 import {handleServerAppError, handleServerNetworkError} from '../../utils/error-utils';
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {clearDataAC} from '../../app/TodolistsList/Todolist/todolists-reducer';
 
 
 // type initialStateType = typeof initialState
@@ -60,7 +61,9 @@ export const logOutTC = (): AppThunk => (dispatch) => {
     authApi.logOut()
         .then((res) => {
             if (res.data.resultCode === 0) {
-                dispatch(setIsLoggedInAC({isLoggedIn: false}));
+                dispatch(setIsLoggedInAC({isLoggedIn: false}))
+                dispatch(clearDataAC())
+                ;
             } else {
                 handleServerAppError(res.data, dispatch);
             }
