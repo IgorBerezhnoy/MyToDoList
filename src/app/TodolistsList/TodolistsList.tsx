@@ -1,4 +1,4 @@
-import {TaskStatuses, TaskType} from '../../api/todolists-api' ;
+import {TaskStatuses, TaskType} from '../../api/todolists-api';
 import React, {useCallback, useEffect} from 'react';
 import {
     addTodolistTC,
@@ -75,7 +75,6 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
         dispatch(addTodolistTC(title));
     }, [dispatch]);
 
-    console.log(isLoggedIn);
     if (!isLoggedIn) {
         return <Navigate to={'login'}/>;
     }

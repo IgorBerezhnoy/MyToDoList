@@ -1,10 +1,18 @@
-import {addTodolistAC, clearDataAC, removeTodolistAC, setTodolistsAC} from './todolists-reducer';
-import {TaskPriorities, TaskStatuses, TaskType, todolistsApi, UpdateTaskModelType} from '../../../api/todolists-api';
+import {addTodolistAC, removeTodolistAC, setTodolistsAC} from './todolists-reducer';
+import {
+    TaskPriorities,
+    TaskStatuses,
+    TaskType,
+    todolistsApi,
+    TodolistType,
+    UpdateTaskModelType
+} from '../../../api/todolists-api';
 import {AppThunk} from '../../store';
 import {TasksStateType} from '../TodolistsList';
 import {appSetStatusAC} from '../../app-reducer';
 import {handleServerAppError, handleServerNetworkError} from '../../../utils/error-utils';
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+
 
 export type ActionsTaskType = ReturnType<typeof removeTaskAC> | ReturnType<typeof addTaskAC>
     | ReturnType<typeof updateTaskAC>
@@ -13,47 +21,36 @@ export type ActionsTaskType = ReturnType<typeof removeTaskAC> | ReturnType<typeo
 
 const initialState: TasksStateType = {};
 
-const slice = createSlice({
+let slice = createSlice({
     name: 'tasks',
-    initialState,
+    initialState: initialState,
     reducers: {
         removeTaskAC(state, action: PayloadAction<{ taskId: string, todolistId: string }>) {
-            state[action.payload.todolistId] = state[action.payload.todolistId]
-                .filter(t => t.id != action.payload.taskId);
-        },
+            let findIndex = state[action.payload.todolistId].findIndex(t => t.id === action.payload.taskId);
+            state[action.payload.todolistId].splice(findIndex,1)
+                  },
         addTaskAC(state, action: PayloadAction<{ task: TaskType }>) {
             state[action.payload.task.todoListId].unshift(action.payload.task);
         },
         updateTaskAC(state, action: PayloadAction<{ taskId: string, task: UpdateTaskModelType, todolistId: string }>) {
-            state[action.payload.todolistId] = state[action.payload.todolistId]
-                .map(t => t.id === action.payload.taskId ? {...t, ...action.payload.task} : t);
+            let findIndex = state[action.payload.todolistId].findIndex(t => t.id === action.payload.taskId);
+            state[action.payload.todolistId][findIndex] = {...state[action.payload.todolistId][findIndex], ...action.payload.task};
+
         },
         setTaskAC(state, action: PayloadAction<{ todolistId: string, tasks: TaskType[] }>) {
             state[action.payload.todolistId] = action.payload.tasks;
         },
     },
-    extraReducers: (builder) => {
-        builder.addCase(addTodolistAC, (state, action) => {
-            state[action.payload.todolist.id] = [];
-        });
-        builder.addCase(removeTodolistAC, (state, action) => {
-            delete state[action.payload.todolistId];
-        });
-        builder.addCase(clearDataAC, (state, action) => {
-           return {};
-        });
-        builder.addCase(setTodolistsAC, (state, action) => {
-            action.payload.todolists.forEach(el => {
-                state[el.id] = [];
-            });
-        });
-    }
+    extraReducers:(builder)=> {
+        builder.addCase(addTodolistAC,(state, action)=>{ state[action.payload.todolist.id] = []} )
+        builder.addCase(removeTodolistAC,(state, action)=>{ delete state[action.payload.todolistId]} )
+        builder.addCase(setTodolistsAC,(state, action)=>{ action.payload.todolists.forEach(el => {state[el.id] = [];})}
+}
 });
-//
+
 
 export const tasksReducer = slice.reducer;
-
-export const {updateTaskAC, addTaskAC, removeTaskAC, setTaskAC} = slice.actions;
+export const {removeTaskAC, addTaskAC, updateTaskAC, setTaskAC} = slice.actions;
 
 export const fetchTaskTC = (todolistId: string): AppThunk => (dispatch) => {
     dispatch(appSetStatusAC({status: 'loading'}));
@@ -68,6 +65,8 @@ export const fetchTaskTC = (todolistId: string): AppThunk => (dispatch) => {
         .finally(() => {
             dispatch(appSetStatusAC({status: 'succeeded'}));
         });
+
+
 };
 
 export const removeTaskTC = (taskId: string, todolistId: string): AppThunk => (dispatch) => {
@@ -151,19 +150,14 @@ export type UpdateTaskModelDomainType = {
     startDate?: string
     deadline?: string
 }
-//     (state: TasksStateType = initialState, action: ActionsTaskType): TasksStateType => {
-//     switch (action.type) {
-//
-//         default:
-//             return state;
-//     }
-// };
+
+
 // export const removeTaskAC = (taskId: string, todolistId: string) => ({
 //     type: 'REMOVE-TASK',
 //     taskId,
 //     todolistId
 // } as const);
-
+//
 // export const addTaskAC = (task: TaskType) => ({type: 'ADD-TASK', task} as const);
 //
 // export const updateTaskAC = (taskId: string, task: UpdateTaskModelType, todolistId: string) => {
@@ -172,10 +166,9 @@ export type UpdateTaskModelDomainType = {
 //
 // export const setTaskAC = (todolistId: string, tasks: TaskType[]) => {
 //     return {type: 'SET-TASK', todolistId, tasks} as const;
-// };
-
-
-// case 'REMOVE-TASK': {
+// (state: TasksStateType = initialState, action: ActionsTaskType): TasksStateType => {
+//     switch (action.type) {
+//         case 'REMOVE-TASK': {
 //             return {...state, [action.todolistId]: state[action.todolistId].filter(t => t.id != action.taskId)};
 //         }
 //         case 'ADD-TASK': {
@@ -208,19 +201,10 @@ export type UpdateTaskModelDomainType = {
 //         case 'SET-TASK': {
 //             return {...state, [action.todolistId]: action.tasks};
 //         }
-
-
-// }    extraReducers: {
-//     [addTodolistAC.type]: (state, action: PayloadAction<{ todolist: TodolistType }>) => {
-//         state[action.payload.todolist.id] = [];
-//     },
-//     [removeTodolistAC.type]: (state, action: PayloadAction<{ todolistId: string }>) => {
-//         delete state[action.payload.todolistId];
-//
-//     },
-//     [setTodolistsAC.type]: (state, action: PayloadAction<{ todolists: TodolistType[] }>) => {
-//         action.payload.todolists.forEach(el => {
-//             state[el.id] = [];
-//         });
+//         default:
+//             return state;
 //     }
-// }
+// };
+
+
+// };

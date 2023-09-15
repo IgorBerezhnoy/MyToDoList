@@ -88,7 +88,7 @@ test('title of specified task should be changed', () => {
 });
 test('new array should be added when new todolist is added', () => {
     let todolist = {id: 'todolistId12', title: 'What to learn', addedDate: '', order: 0};
-    const action = addTodolistAC({todolist});
+    const action = addTodolistAC({todolist},);
 
     const endState = tasksReducer(startState, action);
 
