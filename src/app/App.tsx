@@ -1,41 +1,38 @@
-import React from 'react';
-import '../App.css';
-import {TaskType, Todolist} from '../Todolist';
-import {AddItemForm} from '../addItemForm/AddItemForm';
-import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from '@mui/material';
-import {Menu} from '@mui/icons-material';
-import {useTodolists} from './hooks/UseTodolists';
-import {useTask} from './hooks/UseTask';
+import React, {useCallback, useEffect} from 'react';
+import './App.css';
+import {AppBar, Button, Container, IconButton, Toolbar, Typography} from '@material-ui/core';
+import {Menu} from '@material-ui/icons';
+import {TodolistsList} from './TodolistsList/TodolistsList';
+import {CircularProgress, LinearProgress} from '@mui/material';
+import ErrorSnackBar from '../components/ErrorSnackBar/ErrorSnackBar';
+import {useSelector} from 'react-redux';
+import {appSetInitializedTC, RequestStatusType} from './app-reducer';
+import {AppRootStateType, useAppDispatch} from './store';
+import {Login} from '../features/Login/Login';
+import {Navigate, Route, Router, Routes} from 'react-router-dom';
+import {logOutTC} from '../features/Login/auth-reducer';
+
+type PropsType = { demo?: boolean }
+
+function App({demo = false}: PropsType) {
+
+    let dispatch = useAppDispatch();
+    useEffect(() => {
+        dispatch(appSetInitializedTC());
+    }, []);
+
+    let appStatus = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status);
+    let initialized = useSelector<AppRootStateType, boolean>(state => state.app.initialized);
+    let isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn);
+
+    let onClickLogOutHandler = useCallback(() => {
+        dispatch(logOutTC());
+    }, []);
 
 
-export type FilterValuesType = 'all' | 'active' | 'completed';
-export type TodolistType = {
-    id: string
-    title: string
-    filter: FilterValuesType
-}
-
-export type TasksStateType = {
-    [key: string]: Array<TaskType>
-}
-
-
-function App() {
-    let {
-        tasks,
-        removeTask,
-        addTask,
-        changeStatus,
-        changeTaskTitle, removeTaskForTodolist, addTaskForTodolist
-    } = useTask();
-
-    let {
-        todolists,
-        changeTodolistTitle,
-        changeFilter,
-        removeTodolist,
-        addTodolist
-    } = useTodolists(removeTaskForTodolist, addTaskForTodolist);
+    if (!initialized) {
+        return <CircularProgress style={{position: 'fixed', top: '40%', left: '47%'}}/>;
+    }
 
     return (
         <div className="App">
@@ -47,47 +44,19 @@ function App() {
                     <Typography variant="h6">
                         News
                     </Typography>
-                    <Button color="inherit">Login</Button>
+                    {isLoggedIn && <Button color="inherit" style={{position:"absolute", left: '93%' }} onClick={onClickLogOutHandler}>Log Out</Button>}
                 </Toolbar>
+                {appStatus === 'loading' && <LinearProgress/>}
             </AppBar>
             <Container fixed>
-                <Grid container style={{padding: '20px'}}>
-                    <AddItemForm addItem={addTodolist}/>
-                </Grid>
-                <Grid container spacing={3}>
-                    {
-                        todolists.map(tl => {
-                            let allTodolistTasks = tasks[tl.id];
-                            let tasksForTodolist = allTodolistTasks;
+                <ErrorSnackBar/>
+                <Routes>
+                    <Route path={'/'} element={<TodolistsList demo={demo}/>}/>
+                    <Route path={'/login'} element={<Login/>}/>
+                    <Route path={'/404'} element={<h1>404: PAGE NOT FOUND</h1>}/>
+                    <Route path={'*'} element={<Navigate to={'/404'}/>}/>
+                </Routes>
 
-                            if (tl.filter === 'active') {
-                                tasksForTodolist = allTodolistTasks.filter(t => !t.isDone);
-                            }
-                            if (tl.filter === 'completed') {
-                                tasksForTodolist = allTodolistTasks.filter(t => t.isDone);
-                            }
-
-                            return <Grid key={tl.id} item>
-                                <Paper style={{padding: '10px'}}>
-                                    <Todolist
-                                        key={tl.id}
-                                        id={tl.id}
-                                        title={tl.title}
-                                        tasks={tasksForTodolist}
-                                        removeTask={removeTask}
-                                        changeFilter={changeFilter}
-                                        addTask={addTask}
-                                        changeTaskStatus={changeStatus}
-                                        filter={tl.filter}
-                                        removeTodolist={removeTodolist}
-                                        changeTaskTitle={changeTaskTitle}
-                                        changeTodolistTitle={changeTodolistTitle}
-                                    />
-                                </Paper>
-                            </Grid>;
-                        })
-                    }
-                </Grid>
             </Container>
         </div>
     );
