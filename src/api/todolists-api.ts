@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {string} from 'prop-types';
 
 const settings = {
     withCredentials: true,
@@ -67,9 +68,11 @@ export type TodolistType = {
     order: number
 }
 
+export type FieldErrorsType = { field: string, error: string };
 export type ResponseType<D = {}> = {
     resultCode: number
     messages: Array<string>
+    fieldsErrors?:FieldErrorsType[]
     data: D
 }
 

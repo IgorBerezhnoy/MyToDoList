@@ -1,9 +1,10 @@
 import {AppThunk} from '../../app/store';
 import {appSetStatusAC} from '../../app/app-reducer';
-import {authApi, LoginParamsType, todolistsApi} from '../../api/todolists-api';
+import {authApi, FieldErrorsType, LoginParamsType, todolistsApi} from '../../api/todolists-api';
 import {handleServerAppError, handleServerNetworkError} from '../../utils/error-utils';
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {clearDataAC} from '../../app/TodolistsList/Todolist/todolists-reducer';
+import {AxiosError} from 'axios';
 
 
 // export const loginTC = (data: LoginParamsType): AppThunk => (dispatch) => {
@@ -25,7 +26,15 @@ import {clearDataAC} from '../../app/TodolistsList/Todolist/todolists-reducer';
 //         });
 // };
 
-export const loginTC = createAsyncThunk('auth/loginTC', async (data: LoginParamsType, thunkApi) => {
+export const loginTC = createAsyncThunk<{ isLoggedIn: boolean },
+    LoginParamsType,
+    {
+        rejectValue:
+            {
+                errors: string[],
+                fieldsErrors?: FieldErrorsType[]
+            }
+    }>('auth/loginTC', async (data: LoginParamsType, thunkApi) => {
     thunkApi.dispatch(appSetStatusAC({status: 'loading'}));
     try {
         let res = await authApi.auth(data);
@@ -33,13 +42,13 @@ export const loginTC = createAsyncThunk('auth/loginTC', async (data: LoginParams
             return {isLoggedIn: true};
         } else {
             handleServerAppError(res.data, thunkApi.dispatch);
-            return {isLoggedIn: false};
-
+            return thunkApi.rejectWithValue({errors: res.data.messages, fieldsErrors: res.data.fieldsErrors});
         }
-    } catch (error: any) {
+    } catch (err: any) {
+        const error: AxiosError = err;
         handleServerNetworkError(error, thunkApi.dispatch);
-        return {isLoggedIn: false};
-    }finally {
+        return thunkApi.rejectWithValue({errors: [error.message], fieldsErrors: undefined});
+    } finally {
         thunkApi.dispatch(appSetStatusAC({status: 'succeeded'}));
     }
 });
@@ -53,11 +62,12 @@ const slice = createSlice({
             state.isLoggedIn = action.payload.isLoggedIn;
         }
     },
-    extraReducers: (builder) =>{
-        builder. addCase(loginTC.fulfilled,(state, action)=> {
-                    state.isLoggedIn = action.payload.isLoggedIn;
-        }
-        )}
+    extraReducers: (builder) => {
+        builder.addCase(loginTC.fulfilled, (state, action) => {
+                state.isLoggedIn = action.payload.isLoggedIn;
+            }
+        );
+    }
 });
 export const authReducer = slice.reducer;
 

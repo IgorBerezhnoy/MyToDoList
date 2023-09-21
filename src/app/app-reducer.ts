@@ -68,6 +68,8 @@ export const appSetInitializedTC = (): AppThunk => (dispatch) => {
 
         .finally(() => {
             dispatch(appSetInitializedAC({initialized: true}));
+        dispatch(appSetStatusAC({status: 'succeeded'}));
+
         });
 };
 

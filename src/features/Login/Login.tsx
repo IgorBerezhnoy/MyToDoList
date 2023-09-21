@@ -12,6 +12,7 @@ import {loginTC} from './auth-reducer';
 import {AppRootStateType, useAppDispatch} from '../../app/store';
 import {useSelector} from 'react-redux';
 import {Navigate} from 'react-router-dom';
+import {LoginParamsType} from '../../api/todolists-api';
 
 type ErrorsType = {
     email?: string | null
@@ -31,13 +32,13 @@ export const Login = () => {
         },
         validate: (values) => {
             const errors: ErrorsType = {};
-            if (!values.email) {
-                errors.email = 'Required';
-            } else if (
-                !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-            ) {
-                errors.email = 'Invalid email address';
-            }
+            // if (!values.email) {
+            //     errors.email = 'Required';
+            // } else if (
+            //     !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+            // ) {
+            //     errors.email = 'Invalid email address';
+            // }
             if (!values.password) {
                 errors.password = 'Required';
             } else if (values.password.length <= 3) {
@@ -45,8 +46,15 @@ export const Login = () => {
             }
             return errors;
         },
-        onSubmit: values => {
-            dispatch(loginTC(values));
+        onSubmit: async (values: LoginParamsType, formikHelpers) => {
+            const res = await dispatch(loginTC(values));
+            if (loginTC.rejected.match(res)) {
+                if (res.payload?.fieldsErrors?.length) {
+                    const error=res.payload?.fieldsErrors[0]
+                    formikHelpers.setFieldError(error.field, error.error);
+                }
+                formikHelpers.setFieldError('email', 'fakeError');
+            }
         },
     });
 
