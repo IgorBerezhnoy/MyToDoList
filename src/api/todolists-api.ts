@@ -1,5 +1,4 @@
 import axios from 'axios';
-import {string} from 'prop-types';
 
 const settings = {
     withCredentials: true,

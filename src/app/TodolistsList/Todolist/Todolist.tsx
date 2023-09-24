@@ -7,7 +7,7 @@ import {Task} from './Task';
 import {TaskStatuses, TaskType} from '../../../api/todolists-api';
 import {FilterValuesType, TodolistDomainType} from './todolists-reducer';
 import {useAppDispatch} from '../../store';
-import {fetchTaskTC} from './tasks-reducer';
+import {fetchTask} from './tasks-reducer';
 
 type PropsType = {
     todolist: TodolistDomainType
@@ -27,7 +27,7 @@ export const Todolist = React.memo(function ({demo = false, ...props}: PropsType
     const dispatch = useAppDispatch();
         useEffect(() => {
             if (!demo){
-            dispatch(fetchTaskTC(props.todolist.id));
+            dispatch(fetchTask(props.todolist.id));
             }
         }, []);
     console.log('Todolist called');
