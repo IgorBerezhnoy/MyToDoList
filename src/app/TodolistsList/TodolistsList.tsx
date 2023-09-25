@@ -42,18 +42,16 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
     }, []);
 
     const addTask = useCallback(function (title: string, todolistId: string) {
-        const action = addTaskTC(title, todolistId);
+        const action = addTaskTC({title, todolistId});
         dispatch(action);
     }, []);
 
-    const changeStatus = useCallback(function (id: string, status: TaskStatuses, todolistId: string) {
-        const action = updateTaskTC(id, {'status': status}, todolistId);
-        dispatch(action);
+    const changeStatus = useCallback(function (taskId: string, status: TaskStatuses, todolistId: string) {
+        dispatch(updateTaskTC({taskId, domainModel: {'status': status}, todolistId}));
     }, []);
 
-    const changeTaskTitle = useCallback(function (id: string, title: string, todolistId: string) {
-        const action = updateTaskTC(id, {'title': title}, todolistId);
-        dispatch(action);
+    const changeTaskTitle = useCallback(function (taskId: string, title: string, todolistId: string) {
+        dispatch(updateTaskTC({taskId, domainModel: {'title': title}, todolistId}));
     }, []);
 
     const changeFilter = useCallback(function (filter: FilterValuesType, id: string) {
@@ -62,12 +60,11 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
     }, []);
 
     const removeTodolist = useCallback(function (id: string) {
-        const action = removeTodolistTC(id);
-        dispatch(action);
+        dispatch(removeTodolistTC(id));
     }, []);
 
     const changeTodolistTitle = useCallback(function (id: string, title: string) {
-        dispatch(changeTodolistTitleTC(id, title));
+        dispatch(changeTodolistTitleTC({id, title}));
     }, []);
 
     const addTodolist = useCallback((title: string) => {

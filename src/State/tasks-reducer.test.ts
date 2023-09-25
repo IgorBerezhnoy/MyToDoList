@@ -1,5 +1,5 @@
-import {addTaskAC, removeTaskTC, tasksReducer, updateTaskAC} from '../app/TodolistsList/Todolist/tasks-reducer';
-import {addTodolistAC, removeTodolistAC} from '../app/TodolistsList/Todolist/todolists-reducer';
+import {addTaskTC, removeTaskTC, tasksReducer, updateTaskTC} from '../app/TodolistsList/Todolist/tasks-reducer';
+import {addTodolistTC, removeTodolistTC} from '../app/TodolistsList/Todolist/todolists-reducer';
 import {TaskPriorities, TaskStatuses} from '../api/todolists-api';
 import {TasksStateType} from '../app/TodolistsList/TodolistsList';
 
@@ -51,7 +51,7 @@ test('correct task should be added to correct array', () => {
         id: '1', title: 'juce', status: TaskStatuses.New, todoListId: 'todolistId2', description: '',
         startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriorities.Low
     };
-    const action = addTaskAC({task});
+    const action = addTaskTC.fulfilled({task}, "", {title:"juce", todolistId:"todolistId2"});
 
     const endState = tasksReducer(startState, action);
 
@@ -66,7 +66,7 @@ test('status of specified task should be changed', () => {
         title: 'CSS', status: TaskStatuses.New, description: '',
         startDate: '', deadline: '', priority: TaskPriorities.Low
     };
-    const action = updateTaskAC({taskId: '2', task, todolistId: 'todolistId2'});
+    const action = updateTaskTC.fulfilled({taskId: '2', task, todolistId: 'todolistId2'},"",{taskId: '2', domainModel:task, todolistId: 'todolistId2'});
 
     const endState = tasksReducer(startState, action);
 
@@ -78,7 +78,7 @@ test('title of specified task should be changed', () => {
         title: 'juce', status: TaskStatuses.New, description: '',
         startDate: '', deadline: '', priority: TaskPriorities.Low
     };
-    const action = updateTaskAC({taskId: '2', task, todolistId: 'todolistId2'});
+    const action = updateTaskTC.fulfilled({taskId: '2', task, todolistId: 'todolistId2'}, "", {taskId: '2', domainModel:task, todolistId: 'todolistId2'});
 
     const endState = tasksReducer(startState, action);
 
@@ -88,7 +88,7 @@ test('title of specified task should be changed', () => {
 });
 test('new array should be added when new todolist is added', () => {
     let todolist = {id: 'todolistId12', title: 'What to learn', addedDate: '', order: 0};
-    const action = addTodolistAC({todolist});
+    const action = addTodolistTC.fulfilled({todolist}, "",todolist.title );
 
     const endState = tasksReducer(startState, action);
 
@@ -103,7 +103,7 @@ test('new array should be added when new todolist is added', () => {
     expect(endState[newKey]).toEqual([]);
 });
 test('propertry with todolistId should be deleted', () => {
-    const action = removeTodolistAC({todolistId: 'todolistId2'});
+    const action = removeTodolistTC.fulfilled({todolistId: 'todolistId2'},"", 'todolistId2');
 
     const endState = tasksReducer(startState, action);
 

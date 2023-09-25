@@ -1,8 +1,7 @@
 import {authApi} from '../api/todolists-api';
-import {AppThunk} from './store';
 import {handleServerAppError, handleServerNetworkError} from '../utils/error-utils';
+import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {setIsLoggedInAC} from '../features/Login/auth-reducer';
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 
@@ -22,10 +21,12 @@ const slice = createSlice({
         appSetErrorAC(state, action: PayloadAction<{ error: string | null }>) {
             state.error = action.payload.error;
         },
-        appSetInitializedAC(state, action: PayloadAction<{ initialized: boolean }>) {
-            state.initialized = action.payload.initialized;
-        },
 
+    },
+    extraReducers:(builder)=>{
+        builder.addCase(appSetInitializedTC.fulfilled,(state, action)=>{
+            state.initialized =true
+        })
     }
 });
 
@@ -33,6 +34,44 @@ const slice = createSlice({
 export type InitialStateType = typeof initialState
 
 export const appReducer = slice.reducer;
+
+export const {appSetStatusAC, appSetErrorAC} = slice.actions;
+
+
+export const appSetInitializedTC = createAsyncThunk('app/appSetInitializedTC', async (arg, {dispatch}) => {
+
+    try {
+        let res = await authApi.me();
+        if (res.data.resultCode === 0) {
+            dispatch(setIsLoggedInAC({isLoggedIn: true}));
+        } else {
+            handleServerAppError(res.data, dispatch);
+        }
+    } catch (error: any) {
+        handleServerNetworkError(error, dispatch);
+    } finally {
+        dispatch(appSetStatusAC({status: 'succeeded'}));
+
+    }
+
+
+});
+export type AppReducerActionsType =
+    ReturnType<typeof appSetStatusAC>
+    | ReturnType<typeof appSetErrorAC>
+
+//
+// .finally(() => {
+//     dispatch(appSetInitializedAC({initialized: true}));
+//     dispatch(appSetStatusAC({status: 'succeeded'}));
+//
+// });
+    // | ReturnType<typeof appSetInitializedAC>
+
+// appSetInitializedAC(state, action: PayloadAction<{ initialized: boolean }>) {
+//         //     state.initialized = action.payload.initialized;
+//         // },
+
 //     (state: InitialStateType = initialState, action: AppReducerActionsType): InitialStateType => {
 //     switch (action.type) {
 //         case 'APP/SET-STATUS':
@@ -45,36 +84,9 @@ export const appReducer = slice.reducer;
 //             return state;
 //     }
 // };
-export const {appSetStatusAC, appSetErrorAC, appSetInitializedAC} = slice.actions;
+
 // export const {setIsLoggedInAC} = slice.actions;
 // export const {setIsLoggedInAC} = slice.actions;
 // export const appSetStatusAC = (status: RequestStatusType) => ({type: 'APP/SET-STATUS', status} as const);
 // export const appSetErrorAC = (error: string | null) => ({type: 'APP/SET-ERROR', error} as const);
 // export const appSetInitializedAC = (initialized: boolean) => ({type: 'APP/SET-INITIALIZED', initialized} as const);
-
-
-export const appSetInitializedTC = (): AppThunk => (dispatch) => {
-    authApi.me()
-        .then((res) => {
-            if (res.data.resultCode === 0) {
-                dispatch(setIsLoggedInAC({isLoggedIn: true}));
-            } else {
-                handleServerAppError(res.data, dispatch);
-            }
-        })
-        .catch(error => {
-            handleServerNetworkError(error, dispatch);
-        })
-
-        .finally(() => {
-            dispatch(appSetInitializedAC({initialized: true}));
-        dispatch(appSetStatusAC({status: 'succeeded'}));
-
-        });
-};
-
-
-export type AppReducerActionsType =
-    ReturnType<typeof appSetStatusAC>
-    | ReturnType<typeof appSetErrorAC>
-    | ReturnType<typeof appSetInitializedAC>
