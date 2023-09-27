@@ -6,11 +6,13 @@ import {TodolistsList} from './TodolistsList/TodolistsList';
 import {CircularProgress, LinearProgress} from '@mui/material';
 import ErrorSnackBar from '../components/ErrorSnackBar/ErrorSnackBar';
 import {useSelector} from 'react-redux';
-import {appSetInitializedTC, RequestStatusType} from './app-reducer';
-import {AppRootStateType, useAppDispatch} from './store';
+import {appSetInitializedTC} from './app-reducer';
+import {useAppDispatch} from './store';
 import {Login} from '../features/Login/Login';
-import {Navigate, Route, Router, Routes} from 'react-router-dom';
-import {logOutTC} from '../features/Login/auth-reducer';
+import {Navigate, Route, Routes} from 'react-router-dom';
+import {logOutTC} from '../features/Login/login-reducer';
+import {selectors} from '../features/Login';
+import {selectIsInitialized, selectStatus} from './AppSelectors';
 
 type PropsType = { demo?: boolean }
 
@@ -21,9 +23,11 @@ function App({demo = false}: PropsType) {
         dispatch(appSetInitializedTC());
     }, []);
 
-    let appStatus = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status);
-    let initialized = useSelector<AppRootStateType, boolean>(state => state.app.initialized);
-    let isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn);
+
+
+    let appStatus = useSelector(selectStatus);
+    let initialized = useSelector(selectIsInitialized);
+    let isLoggedIn = useSelector(selectors.selectorIsLogin);
 
     let onClickLogOutHandler = useCallback(() => {
         dispatch(logOutTC());
@@ -44,7 +48,8 @@ function App({demo = false}: PropsType) {
                     <Typography variant="h6">
                         News
                     </Typography>
-                    {isLoggedIn && <Button color="inherit" style={{position:"absolute", left: '93%' }} onClick={onClickLogOutHandler}>Log Out</Button>}
+                    {isLoggedIn && <Button color="inherit" style={{position: 'absolute', left: '93%'}}
+                                           onClick={onClickLogOutHandler}>Log Out</Button>}
                 </Toolbar>
                 {appStatus === 'loading' && <LinearProgress/>}
             </AppBar>

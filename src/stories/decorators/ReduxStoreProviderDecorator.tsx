@@ -1,6 +1,6 @@
 import React from 'react';
 import {Provider} from 'react-redux';
-import {applyMiddleware, combineReducers, createStore} from 'redux';
+import {combineReducers} from 'redux';
 import {tasksReducer} from '../../app/TodolistsList/Todolist/tasks-reducer';
 import {todolistsReducer} from '../../app/TodolistsList/Todolist/todolists-reducer';
 import {v1} from 'uuid';
@@ -9,14 +9,14 @@ import {TaskPriorities, TaskStatuses} from '../../api/todolists-api';
 import {appReducer} from '../../app/app-reducer';
 import thunk from 'redux-thunk';
 import {MemoryRouter} from 'react-router-dom';
-import {authReducer} from '../../features/Login/auth-reducer';
+import {loginReducer} from '../../features/Login/login-reducer';
 import {configureStore} from '@reduxjs/toolkit';
 
 const rootReducer: RootReducerType = combineReducers({
     tasks: tasksReducer,
     todolists: todolistsReducer,
     app: appReducer,
-    auth: authReducer
+    login: loginReducer
 });
 
 const initialGlobalState: AppRootStateType = {
@@ -59,7 +59,7 @@ const initialGlobalState: AppRootStateType = {
         error: null,
         initialized: false
     },
-    auth: {
+    login: {
         isLoggedIn: false
     }
 
