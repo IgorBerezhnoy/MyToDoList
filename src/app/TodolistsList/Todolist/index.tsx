@@ -1,5 +1,7 @@
-import * as taskActions from "./task-actions"
-import * as todolistAsyncActions from "./todolists-actions"
-import { changeTodolistFilterAC, changeTodolistEntityStatusAC}  from "./todolists-reducer"
-const todolistActions={...todolistAsyncActions, changeTodolistEntityStatusAC, changeTodolistFilterAC}
-export {taskActions,todolistActions}
+
+import {slice, todolistAsyncActions} from './todolists-reducer';
+import {taskAsyncActions} from './tasks-reducer';
+import {TodolistsList} from '../TodolistsList';
+
+const todolistActions = {...slice.actions, ...todolistAsyncActions};
+export {taskAsyncActions, todolistActions, TodolistsList};

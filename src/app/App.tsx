@@ -2,7 +2,6 @@ import React, {useCallback, useEffect} from 'react';
 import './App.css';
 import {AppBar, Button, Container, IconButton, Toolbar, Typography} from '@material-ui/core';
 import {Menu} from '@material-ui/icons';
-import {TodolistsList} from './TodolistsList/TodolistsList';
 import {CircularProgress, LinearProgress} from '@mui/material';
 import ErrorSnackBar from '../components/ErrorSnackBar/ErrorSnackBar';
 import {useSelector} from 'react-redux';
@@ -13,6 +12,7 @@ import {Navigate, Route, Routes} from 'react-router-dom';
 import {logOutTC} from '../features/Login/login-reducer';
 import {selectors} from '../features/Login';
 import {selectIsInitialized, selectStatus} from './AppSelectors';
+import {TodolistsList} from './TodolistsList/TodolistsList';
 
 type PropsType = { demo?: boolean }
 
