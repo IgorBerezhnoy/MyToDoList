@@ -5,32 +5,29 @@ import {Menu} from '@material-ui/icons';
 import {CircularProgress, LinearProgress} from '@mui/material';
 import ErrorSnackBar from '../components/ErrorSnackBar/ErrorSnackBar';
 import {useSelector} from 'react-redux';
-import {appSetInitializedTC} from './app-reducer';
-import {useAppDispatch} from './store';
-import {Login} from '../features/Login/Login';
+import {asyncAppActions} from './app-reducer';
+import {useActions} from './store';
 import {Navigate, Route, Routes} from 'react-router-dom';
-import {logOutTC} from '../features/Login/login-reducer';
-import {selectors} from '../features/Login';
+import {asyncLoginActions,Login, selectors} from '../features/Login';
 import {selectIsInitialized, selectStatus} from './AppSelectors';
-import {TodolistsList} from './TodolistsList/TodolistsList';
+import {TodolistsList} from '../features/TodolistList/Todolist';
 
 type PropsType = { demo?: boolean }
 
 function App({demo = false}: PropsType) {
 
-    let dispatch = useAppDispatch();
+    const {appSetInitializedTC} = useActions(asyncAppActions);
+    const {logOutTC} = useActions(asyncLoginActions);
     useEffect(() => {
-        dispatch(appSetInitializedTC());
+        appSetInitializedTC();
     }, []);
-
-
 
     let appStatus = useSelector(selectStatus);
     let initialized = useSelector(selectIsInitialized);
     let isLoggedIn = useSelector(selectors.selectorIsLogin);
 
     let onClickLogOutHandler = useCallback(() => {
-        dispatch(logOutTC());
+        logOutTC();
     }, []);
 
 

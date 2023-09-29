@@ -8,12 +8,12 @@ import FormLabel from '@mui/material/FormLabel';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import {useFormik} from 'formik';
-import {loginTC} from './login-reducer';
-import {AppRootStateType, useAppDispatch} from '../../app/store';
+import {AppRootStateType, useActions, useAppDispatch} from '../../app/store';
 import {useSelector} from 'react-redux';
 import {Navigate} from 'react-router-dom';
 import {LoginParamsType} from '../../api/todolists-api';
 import {selectorIsLogin} from './loginSelectors';
+import {asyncLoginActions} from './index';
 
 
 type ErrorsType = {
@@ -25,6 +25,7 @@ export const Login = () => {
     let dispatch = useAppDispatch();
     let isLoggedIn = useSelector(selectorIsLogin);
 
+    let {loginTC}=asyncLoginActions
     console.log(isLoggedIn);
     const formik = useFormik({
         initialValues: {

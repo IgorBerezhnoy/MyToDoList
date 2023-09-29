@@ -6,7 +6,7 @@ import {
     todolistAsyncActions,
     TodolistDomainType,
     todolistsReducer
-} from '../app/TodolistsList/Todolist/todolists-reducer';
+} from '../features/TodolistList/Todolist/todolists-reducer';
 
 
 let todolistId1: string;

@@ -1,7 +1,7 @@
-import { tasksReducer, taskAsyncActions} from '../app/TodolistsList/Todolist/tasks-reducer';
+import { tasksReducer, taskAsyncActions} from '../features/TodolistList/Todolist/Task/tasks-reducer';
 import {TaskPriorities, TaskStatuses} from '../api/todolists-api';
-import {TasksStateType} from '../app/TodolistsList/TodolistsList';
-import {todolistAsyncActions} from '../app/TodolistsList/Todolist/todolists-reducer';
+import {TasksStateType} from '../features/TodolistList/TodolistsList';
+import {todolistAsyncActions} from '../features/TodolistList/Todolist/todolists-reducer';
 
 let {updateTask,addTask,removeTask}=taskAsyncActions
 let {addTodolist,removeTodolist}=todolistAsyncActions

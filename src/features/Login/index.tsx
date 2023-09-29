@@ -1,2 +1,6 @@
 import  * as selectors from "./loginSelectors"
-export {selectors}
+import {Login} from './Login';
+import {asyncLoginActions, slice} from './login-reducer';
+
+
+export {selectors, Login, asyncLoginActions}

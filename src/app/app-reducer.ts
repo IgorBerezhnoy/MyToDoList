@@ -3,6 +3,7 @@ import {handleServerAppError, handleServerNetworkError} from '../utils/error-uti
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {setIsLoggedInAC} from '../features/Login/login-reducer';
 
+
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 
 const initialState = {
@@ -37,9 +38,7 @@ export const appReducer = slice.reducer;
 
 export const {appSetStatusAC, appSetErrorAC} = slice.actions;
 
-
-export const appSetInitializedTC = createAsyncThunk('app/appSetInitializedTC', async (arg, {dispatch}) => {
-
+ const appSetInitializedTC = createAsyncThunk('app/appSetInitializedTC', async (arg, {dispatch}) => {
     try {
         let res = await authApi.me();
         if (res.data.resultCode === 0) {
@@ -51,11 +50,9 @@ export const appSetInitializedTC = createAsyncThunk('app/appSetInitializedTC', a
         handleServerNetworkError(error, dispatch);
     } finally {
         dispatch(appSetStatusAC({status: 'succeeded'}));
-
     }
-
-
 });
+export const asyncAppActions={appSetInitializedTC}
 export type AppReducerActionsType =
     ReturnType<typeof appSetStatusAC>
     | ReturnType<typeof appSetErrorAC>
