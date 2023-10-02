@@ -22,7 +22,7 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
     const {addTodolist, fetchTodolistsTC} = useActions(todolistActions);
 
     const todolists = useSelector(selectorTodolists);
-    const tasks = useSelector<AppRootStateType, TasksStateType>(selectorTasks)
+    const tasks = useSelector<AppRootStateType, TasksStateType>(selectorTasks);
 
     useEffect(() => {
         if (!demo || !isLoggedIn) {
@@ -38,19 +38,22 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
     return (<><Grid container style={{padding: '20px'}}>
         <AddItemForm addItem={addTodolist}/>
     </Grid>
-        <Grid container spacing={3}>
+        <Grid container spacing={3} style={{flexWrap: 'nowrap', overflowX: 'scroll'}}>
+            {/*TODO Текущий вариант не очень Переделать потом*/}
+            {/*<Grid container spacing={3}}>*/}
+
             {
                 todolists.map(tl => {
                     let allTodolistTasks = tasks[tl.id];
 
                     return <Grid item key={tl.id}>
-                        <Paper style={{padding: '10px'}}>
-                            <Todolist
-                                todolist={tl}
-                                tasks={allTodolistTasks}
-                                demo={demo}
-                            />
-                        </Paper>
+
+                        <Todolist
+                            todolist={tl}
+                            tasks={allTodolistTasks}
+                            demo={demo}
+                        />
+
                     </Grid>;
                 })
             }

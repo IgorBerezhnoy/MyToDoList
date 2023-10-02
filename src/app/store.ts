@@ -1,7 +1,7 @@
 import {tasksReducer} from '../features/TodolistList/Todolist/Task/tasks-reducer';
 import {ActionsTodolistsType, todolistsReducer} from '../features/TodolistList/Todolist/todolists-reducer';
 import {ActionCreatorsMapObject, bindActionCreators, combineReducers} from 'redux';
-import thunk, {ThunkDispatch} from 'redux-thunk';
+import {ThunkDispatch} from 'redux-thunk';
 import {useDispatch} from 'react-redux';
 import {appReducer, AppReducerActionsType} from './app-reducer';
 import {ActionsLoginType, loginReducer} from '../features/Login/login-reducer';
@@ -45,8 +45,7 @@ window.store = store;
 
 export function useActions<T extends ActionCreatorsMapObject>(actions: T) {
     const dispatch = useAppDispatch();
-    const boundActions = useMemo(() => {
+    return useMemo(() => {
         return bindActionCreators(actions, dispatch);
     }, []);
-    return boundActions;
 }

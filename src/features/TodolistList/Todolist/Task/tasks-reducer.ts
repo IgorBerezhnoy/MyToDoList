@@ -92,8 +92,9 @@ const addTask = createAsyncThunk<{ task: TaskType }, { title: string, todolistId
             return {task: res.data.data.item};
         } else {
             handleServerAppError(res.data, dispatch);
-            dispatch(appSetStatusAC({status: 'failed'}));
-            return thunkAPI.rejectWithValue({task: {}});
+            debugger
+            return thunkAPI.rejectWithValue({});
+
         }
     } catch (error) {
         dispatch(appSetStatusAC({status: 'failed'}));

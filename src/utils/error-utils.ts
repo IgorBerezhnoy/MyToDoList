@@ -1,4 +1,4 @@
-import {appSetErrorAC} from '../app/app-reducer';
+import {appSetErrorAC, appSetStatusAC} from '../app/app-reducer';
 import {ResponseType} from '../api/todolists-api';
 import {AppActionsType} from '../app/store';
 import {Dispatch} from 'react';
@@ -9,8 +9,10 @@ export const handleServerAppError = <D>(res: ResponseType<D>, dispatch: Dispatch
     } else {
         dispatch(appSetErrorAC({error:'some error'}));
     }
+    dispatch(appSetStatusAC({status: 'failed'}));
 };
 export const handleServerNetworkError = <D>(error: {message:string}, dispatch: Dispatch<AppActionsType>) => {
     dispatch(appSetErrorAC({error:error.message ? error.message : 'some error'}));
+    dispatch(appSetStatusAC({status: 'failed'}));
 
 };

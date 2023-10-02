@@ -1,11 +1,13 @@
 import React from 'react';
 import {action} from '@storybook/addon-actions';
-import {Task} from './features/TodolistList/Todolist/Task/Task';
-import {TaskPriorities, TaskStatuses} from './api/todolists-api';
+import {Task} from '../features/TodolistList/Todolist/Task/Task';
+import {TaskPriorities, TaskStatuses} from '../api/todolists-api';
+import {ReduxStoreProviderDecorator} from './decorators/ReduxStoreProviderDecorator';
 
 export default {
     title: 'Task Stories',
-    component: Task
+    component: Task,
+    decorators:[ReduxStoreProviderDecorator]
 };
 
 const removeCallback = action('Remove Button inside Task clicked');
