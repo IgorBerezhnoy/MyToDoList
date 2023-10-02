@@ -2,8 +2,8 @@ import * as React from 'react';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, {AlertProps} from '@mui/material/Alert';
 import {useDispatch, useSelector} from 'react-redux';
-import {AppRootStateType, useAppDispatch} from '../../app/store';
-import {appSetErrorAC} from '../../app/app-reducer';
+import {AppRootStateType} from '../../app/store';
+import {appSetErrorAC} from '../../features/Application/app-reducer';
 
 
 export default function ErrorSnackBar() {

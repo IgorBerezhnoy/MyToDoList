@@ -5,12 +5,13 @@ import {Menu} from '@material-ui/icons';
 import {CircularProgress, LinearProgress} from '@mui/material';
 import ErrorSnackBar from '../components/ErrorSnackBar/ErrorSnackBar';
 import {useSelector} from 'react-redux';
-import {AppActions} from './app-reducer';
-import {useActions} from './store';
+import {AppActions} from '../features/Application/app-reducer';
+
 import {Navigate, Route, Routes} from 'react-router-dom';
 import {asyncLoginActions,Login, selectors} from '../features/Login';
-import {selectIsInitialized, selectStatus} from './AppSelectors';
+import {selectIsInitialized, selectStatus} from '../features/Application/appSelectors';
 import {TodolistsList} from '../features/TodolistList';
+import {useActions} from '../utils/redux-utils';
 
 type PropsType = { demo?: boolean }
 

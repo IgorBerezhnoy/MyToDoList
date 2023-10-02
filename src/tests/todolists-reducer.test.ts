@@ -1,5 +1,5 @@
 import {v1} from 'uuid';
-import {RequestStatusType} from '../app/app-reducer';
+import {RequestStatusType} from '../features/Application/app-reducer';
 import {
     changeTodolistEntityStatusAC, changeTodolistFilter,
     FilterValuesType,

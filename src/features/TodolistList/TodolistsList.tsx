@@ -2,7 +2,6 @@ import {TaskType} from '../../api/todolists-api';
 import React, {useEffect} from 'react';
 import {TodolistDomainType} from './Todolist/todolists-reducer';
 import {useSelector} from 'react-redux';
-import {AppRootStateType, useActions} from '../../app/store';
 import {Grid, Paper} from '@material-ui/core';
 import {AddItemForm} from '../../components/AddItemForm/AddItemForm';
 import {Todolist} from './Todolist/Todolist';
@@ -11,6 +10,8 @@ import {selectorIsLogin} from '../Login/loginSelectors';
 import {todolistActions} from './index';
 import {selectorTodolists} from './Todolist/todolist-selectors';
 import {selectorTasks} from './Todolist/Task/tasks-selectors';
+import {AppRootStateType} from '../../app/store';
+import {useActions} from '../../utils/redux-utils';
 
 export type TasksStateType = {
     [key: string]: Array<TaskType>
@@ -19,6 +20,7 @@ type PropsType = { demo?: boolean }
 
 export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
     let isLoggedIn = useSelector(selectorIsLogin);
+
     const {addTodolist, fetchTodolistsTC} = useActions(todolistActions);
 
     const todolists = useSelector(selectorTodolists);

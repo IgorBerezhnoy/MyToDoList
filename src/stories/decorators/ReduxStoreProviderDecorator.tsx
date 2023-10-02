@@ -6,7 +6,7 @@ import {todolistsReducer} from '../../features/TodolistList/Todolist/todolists-r
 import {v1} from 'uuid';
 import {AppRootStateType, RootReducerType} from '../../app/store';
 import {TaskPriorities, TaskStatuses} from '../../api/todolists-api';
-import {appReducer} from '../../app/app-reducer';
+import {appReducer} from '../../features/Application/app-reducer';
 import thunk from 'redux-thunk';
 import {MemoryRouter} from 'react-router-dom';
 import {loginReducer} from '../../features/Login/login-reducer';
