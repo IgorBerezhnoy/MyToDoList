@@ -52,7 +52,7 @@ export const {appSetStatusAC, appSetErrorAC} = slice.actions;
         dispatch(appSetStatusAC({status: 'succeeded'}));
     }
 });
-export const asyncAppActions={appSetInitializedTC}
+export const AppActions={appSetInitializedTC, appSetStatusAC, appSetErrorAC}
 export type AppReducerActionsType =
     ReturnType<typeof appSetStatusAC>
     | ReturnType<typeof appSetErrorAC>

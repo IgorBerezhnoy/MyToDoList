@@ -3,7 +3,7 @@ import {IconButton, TextField} from '@material-ui/core';
 import {AddBox} from '@material-ui/icons';
 
 type AddItemFormPropsType = {
-    addItem: (title: string) => any
+    addItem: (title: string) => any //Promise
     disabled?: boolean
 }
 

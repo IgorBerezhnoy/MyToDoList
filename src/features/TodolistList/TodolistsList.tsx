@@ -8,7 +8,7 @@ import {AddItemForm} from '../../components/AddItemForm/AddItemForm';
 import {Todolist} from './Todolist/Todolist';
 import {Navigate} from 'react-router-dom';
 import {selectorIsLogin} from '../Login/loginSelectors';
-import {todolistActions} from './Todolist';
+import {todolistActions} from './index';
 import {selectorTodolists} from './Todolist/todolist-selectors';
 import {selectorTasks} from './Todolist/Task/tasks-selectors';
 

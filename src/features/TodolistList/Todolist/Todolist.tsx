@@ -7,7 +7,7 @@ import {Task} from './Task/Task';
 import {TaskStatuses, TaskType} from '../../../api/todolists-api';
 import {FilterValuesType, TodolistDomainType} from './todolists-reducer';
 import {useActions} from '../../../app/store';
-import {taskAsyncActions, todolistActions} from './index';
+import {taskAsyncActions, todolistActions} from '../index';
 import {Paper, PropTypes} from '@mui/material';
 
 type PropsType = {
@@ -57,12 +57,12 @@ export const Todolist = React.memo(function ({demo = false, ...props}: PropsType
                 color={color}>{name}</Button>);
 
     return <Paper style={{padding: '10px', width: '300px', position: 'relative'}}>
-        <IconButton style={{
-            position: 'absolute', right: '5px', top: '5px'
+        <IconButton size={"small"} style={{
+            position: 'absolute', right: '10px', top: '5px'
         }}
                     disabled={props.todolist.entityStatus == 'loading'}
                     onClick={() => removeTodolist(props.todolist.id)}>
-            <Delete/>
+            <Delete fontSize={"small"}/>
         </IconButton>
         <h3>
             <EditableSpan value={props.todolist.title} onChange={changeTodolistTitle}/>

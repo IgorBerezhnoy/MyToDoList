@@ -28,7 +28,6 @@ export const slice = createSlice({
 export const loginReducer = slice.reducer;
 
 export let {setIsLoggedInAC}=slice.actions
-export type ActionsLoginType = ReturnType<typeof setIsLoggedInAC>
 
 export const loginTC = createAsyncThunk<undefined,
     LoginParamsType, {

@@ -146,6 +146,8 @@ export let todolistAsyncActions = {
     addTodolist,
     changeTodolistTitleTC,
 };
+export const todolistActions = {...slice.actions, ...todolistAsyncActions};
+
 
 export type ActionsTodolistsType =
     | ReturnType<typeof changeTodolistFilter>

@@ -1,12 +1,12 @@
-import {tasksReducer} from '../features/TodolistList/Todolist/Task/tasks-reducer';
-import {ActionsTodolistsType, todolistsReducer} from '../features/TodolistList/Todolist/todolists-reducer';
+import {tasksReducer} from '../features/TodolistList';
+import { todolistsReducer} from '../features/TodolistList';
 import {ActionCreatorsMapObject, bindActionCreators, combineReducers} from 'redux';
 import {ThunkDispatch} from 'redux-thunk';
 import {useDispatch} from 'react-redux';
 import {appReducer, AppReducerActionsType} from './app-reducer';
-import {ActionsLoginType, loginReducer} from '../features/Login/login-reducer';
 import {configureStore} from '@reduxjs/toolkit';
 import {useMemo} from 'react';
+import { loginReducer} from '../features/Login';
 
 // объединяя reducer-ы с помощью combineReducers,
 // мы задаём структуру нашего единственного объекта-состояния
@@ -28,24 +28,3 @@ export const store = configureStore({
 
 
 // определить автоматически тип всего объекта состояния
-export type AppRootStateType = ReturnType<typeof rootReducer>
-export type RootReducerType = typeof rootReducer
-
-export type AppActionsType = ActionsTodolistsType | /*ActionsTaskType | */AppReducerActionsType | ActionsLoginType
-
-
-export type ThunkType = ThunkDispatch<AppRootStateType, unknown, AppActionsType>
-// export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, AppRootStateType, unknown, AppActionsType>
-export type DispatchFunc = () => ThunkType
-export const useAppDispatch: DispatchFunc = useDispatch;
-// а это, чтобы можно было в консоли браузера обращаться к store в любой момент
-// @ts-ignore
-window.store = store;
-
-
-export function useActions<T extends ActionCreatorsMapObject>(actions: T) {
-    const dispatch = useAppDispatch();
-    return useMemo(() => {
-        return bindActionCreators(actions, dispatch);
-    }, []);
-}

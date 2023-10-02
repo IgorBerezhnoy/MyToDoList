@@ -5,18 +5,18 @@ import {Menu} from '@material-ui/icons';
 import {CircularProgress, LinearProgress} from '@mui/material';
 import ErrorSnackBar from '../components/ErrorSnackBar/ErrorSnackBar';
 import {useSelector} from 'react-redux';
-import {asyncAppActions} from './app-reducer';
+import {AppActions} from './app-reducer';
 import {useActions} from './store';
 import {Navigate, Route, Routes} from 'react-router-dom';
 import {asyncLoginActions,Login, selectors} from '../features/Login';
 import {selectIsInitialized, selectStatus} from './AppSelectors';
-import {TodolistsList} from '../features/TodolistList/Todolist';
+import {TodolistsList} from '../features/TodolistList';
 
 type PropsType = { demo?: boolean }
 
 function App({demo = false}: PropsType) {
 
-    const {appSetInitializedTC} = useActions(asyncAppActions);
+    const {appSetInitializedTC} = useActions(AppActions);
     const {logOutTC} = useActions(asyncLoginActions);
     useEffect(() => {
         appSetInitializedTC();
