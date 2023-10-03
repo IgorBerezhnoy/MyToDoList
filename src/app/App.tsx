@@ -5,11 +5,10 @@ import {Menu} from '@material-ui/icons';
 import {CircularProgress, LinearProgress} from '@mui/material';
 import ErrorSnackBar from '../components/ErrorSnackBar/ErrorSnackBar';
 import {useSelector} from 'react-redux';
-import {AppActions} from '../features/Application/app-reducer';
-
+import {AppActions} from '../features/Application';
 import {Navigate, Route, Routes} from 'react-router-dom';
-import {asyncLoginActions,Login, selectors} from '../features/Login';
-import {selectIsInitialized, selectStatus} from '../features/Application/appSelectors';
+import {asyncLoginActions, Login, selectors} from '../features/Login';
+import {selectorsApp} from '../features/Application/appSelectors';
 import {TodolistsList} from '../features/TodolistList';
 import {useActions} from '../utils/redux-utils';
 
@@ -23,8 +22,8 @@ function App({demo = false}: PropsType) {
         appSetInitializedTC();
     }, []);
 
-    let appStatus = useSelector(selectStatus);
-    let initialized = useSelector(selectIsInitialized);
+    let appStatus = useSelector(selectorsApp.selectStatus);
+    let initialized = useSelector(selectorsApp.selectIsInitialized);
     let isLoggedIn = useSelector(selectors.selectorIsLogin);
 
     let onClickLogOutHandler = useCallback(() => {
