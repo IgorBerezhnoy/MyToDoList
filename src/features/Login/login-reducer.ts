@@ -1,8 +1,8 @@
-import {appSetStatusAC} from '../Application/app-reducer';
 import {authApi, FieldErrorsType, LoginParamsType} from '../../api/todolists-api';
 import {handleServerAppError, handleServerNetworkError} from '../../utils/error-utils';
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {clearDataAC} from '../TodolistList/Todolist/todolists-reducer';
+import {appSetStatusAC} from '../Application';
 
 export const slice = createSlice({
     name: 'login',

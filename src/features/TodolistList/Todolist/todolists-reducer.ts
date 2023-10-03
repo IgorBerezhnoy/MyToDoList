@@ -1,7 +1,8 @@
 import {todolistsApi, TodolistType} from '../../../api/todolists-api';
-import {appSetStatusAC, RequestStatusType} from '../../Application/app-reducer';
+import { RequestStatusType} from '../../Application/app-reducer';
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {handleServerAppError, handleServerNetworkError} from '../../../utils/error-utils';
+import {appSetStatusAC} from '../../Application';
 
 const initialState: Array<TodolistDomainType> = [];
 
@@ -78,7 +79,7 @@ const fetchTodolistsTC = createAsyncThunk('todolists/fetchTodolistsTC', async (a
 });
 const removeTodolist = createAsyncThunk('todolists/removeTodolistsTC',
     async (todolistId: string, thunkAPI) => {
-        let {dispatch, extra} = thunkAPI;
+        let {dispatch} = thunkAPI;
         //await extra.api.delete('')
         dispatch(changeTodolistEntityStatusAC({id: todolistId, status: 'loading'}));
         dispatch(appSetStatusAC({status: 'loading'}));

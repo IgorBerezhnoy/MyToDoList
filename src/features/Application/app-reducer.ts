@@ -1,7 +1,8 @@
 import {authApi} from '../../api/todolists-api';
 import {handleServerAppError, handleServerNetworkError} from '../../utils/error-utils';
-import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {setIsLoggedInAC} from '../Login/login-reducer';
+import {appSetErrorAC, appSetStatusAC} from './ApplicationCommonActions';
 
 
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
@@ -16,18 +17,20 @@ const slice = createSlice({
     name: 'app',
     initialState: initialState,
     reducers: {
-        appSetStatusAC(state, action: PayloadAction<{ status: RequestStatusType }>) {
-            state.status = action.payload.status;
-        },
-        appSetErrorAC(state, action: PayloadAction<{ error: string | null }>) {
-            state.error = action.payload.error;
-        },
+
 
     },
-    extraReducers:(builder)=>{
-        builder.addCase(appSetInitializedTC.fulfilled,(state, action)=>{
-            state.initialized =true
-        })
+    extraReducers: (builder) => {
+        builder
+            .addCase(appSetInitializedTC.fulfilled, (state, ) => {
+                state.initialized = true;
+            })
+            .addCase(appSetStatusAC, (state, action) => {
+                state.status = action.payload.status;
+            })
+            .addCase(appSetErrorAC, (state, action) => {
+                state.error = action.payload.error;
+            });
     }
 });
 
@@ -36,9 +39,8 @@ export type InitialStateType = typeof initialState
 
 export const appReducer = slice.reducer;
 
-export const {appSetStatusAC, appSetErrorAC} = slice.actions;
 
- const appSetInitializedTC = createAsyncThunk('app/appSetInitializedTC', async (arg, {dispatch}) => {
+const appSetInitializedTC = createAsyncThunk('app/appSetInitializedTC', async (arg, {dispatch}) => {
     try {
         let res = await authApi.me();
         if (res.data.resultCode === 0) {
@@ -52,7 +54,7 @@ export const {appSetStatusAC, appSetErrorAC} = slice.actions;
         dispatch(appSetStatusAC({status: 'succeeded'}));
     }
 });
-export const AppActions={appSetInitializedTC, appSetStatusAC, appSetErrorAC}
+export const AppActions = {appSetInitializedTC, appSetStatusAC, appSetErrorAC};
 export type AppReducerActionsType =
     ReturnType<typeof appSetStatusAC>
     | ReturnType<typeof appSetErrorAC>
@@ -63,7 +65,7 @@ export type AppReducerActionsType =
 //     dispatch(appSetStatusAC({status: 'succeeded'}));
 //
 // });
-    // | ReturnType<typeof appSetInitializedAC>
+// | ReturnType<typeof appSetInitializedAC>
 
 // appSetInitializedAC(state, action: PayloadAction<{ initialized: boolean }>) {
 //         //     state.initialized = action.payload.initialized;
