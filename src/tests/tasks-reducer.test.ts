@@ -66,13 +66,13 @@ test('correct task should be added to correct array', () => {
     expect(endState['todolistId2'][0].status).toBe(TaskStatuses.New);
 });
 test('status of specified task should be changed', () => {
-    let task = {
+    let model = {
         title: 'CSS', status: TaskStatuses.New, description: '',
         startDate: '', deadline: '', priority: TaskPriorities.Low
     };
-    const action = updateTask.fulfilled({taskId: '2', task, todolistId: 'todolistId2'}, '', {
+    const action = updateTask.fulfilled({taskId: '2',  model, todolistId: 'todolistId2'}, '', {
         taskId: '2',
-        domainModel: task,
+        domainModel: model,
         todolistId: 'todolistId2'
     });
 
@@ -82,14 +82,14 @@ test('status of specified task should be changed', () => {
     expect(endState['todolistId2'][1].status).toBe(TaskStatuses.New);
 });
 test('title of specified task should be changed', () => {
-    let task = {
+    let model = {
         title: 'juce', status: TaskStatuses.New, description: '',
         startDate: '', deadline: '', priority: TaskPriorities.Low
     };
 
-    const action = updateTask.fulfilled({taskId: '2', task, todolistId: 'todolistId2'}, '', {
+    const action = updateTask.fulfilled({taskId: '2',  model, todolistId: 'todolistId2'}, '', {
         taskId: '2',
-        domainModel: task,
+        domainModel: model,
         todolistId: 'todolistId2'
     });
 

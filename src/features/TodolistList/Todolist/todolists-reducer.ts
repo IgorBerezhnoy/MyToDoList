@@ -1,8 +1,11 @@
-import {todolistsApi, TodolistType} from '../../../api/todolists-api';
+
 import { RequestStatusType} from '../../Application/app-reducer';
-import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {handleServerAppError, handleServerNetworkError} from '../../../utils/error-utils';
+import { createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {handleServerNetworkError} from '../../../utils/handleServerNetworkError';
 import {appSetStatusAC} from '../../Application';
+import {createAppAsyncThunk} from '../../../utils/createAppAsyncThunk';
+import {todolistsApi, TodolistType} from '../../../api/todolists-api1';
+import {handleServerAppError} from '../../../utils/handle-server-app-error';
 
 const initialState: Array<TodolistDomainType> = [];
 
@@ -64,7 +67,7 @@ export const {
 } = slice.actions;
 
 
-const fetchTodolistsTC = createAsyncThunk('todolists/fetchTodolistsTC', async (arg, thunkAPI) => {
+const fetchTodolistsTC = createAppAsyncThunk('todolists/fetchTodolistsTC', async (arg, thunkAPI) => {
     let {dispatch} = thunkAPI;
     dispatch(appSetStatusAC({status: 'loading'}));
     try {
@@ -74,10 +77,10 @@ const fetchTodolistsTC = createAsyncThunk('todolists/fetchTodolistsTC', async (a
     } catch (error: any) {
         handleServerNetworkError(error, dispatch);
         dispatch(appSetStatusAC({status: 'succeeded'}));
-        return thunkAPI.rejectWithValue({todolists: {}});
+        return thunkAPI.rejectWithValue(null);
     }
 });
-const removeTodolist = createAsyncThunk('todolists/removeTodolistsTC',
+const removeTodolist = createAppAsyncThunk('todolists/removeTodolistsTC',
     async (todolistId: string, thunkAPI) => {
         let {dispatch} = thunkAPI;
         //await extra.api.delete('')
@@ -90,15 +93,15 @@ const removeTodolist = createAsyncThunk('todolists/removeTodolistsTC',
                 return {todolistId};
             } else {
                 handleServerAppError(res.data, dispatch);
-                return thunkAPI.rejectWithValue({});
+                return thunkAPI.rejectWithValue(null);
             }
         } catch (error: any) {
             handleServerNetworkError(error, dispatch);
             dispatch(appSetStatusAC({status: 'failed'}));
-            return thunkAPI.rejectWithValue({});
+            return thunkAPI.rejectWithValue(null);
         }
     });
-const addTodolist = createAsyncThunk<{ todolist: TodolistType }, string>('todolists/addTodolistTC', async (title: string, thunkAPI) => {
+const addTodolist = createAppAsyncThunk<{ todolist: TodolistType }, string>('todolists/addTodolistTC', async (title: string, thunkAPI) => {
     let {dispatch} = thunkAPI;
     dispatch(appSetStatusAC({status: 'loading'}));
     try {
@@ -110,15 +113,15 @@ const addTodolist = createAsyncThunk<{ todolist: TodolistType }, string>('todoli
             console.log(res)
             handleServerAppError(res.data, dispatch);
 
-            return thunkAPI.rejectWithValue({})
+            return thunkAPI.rejectWithValue(null)
         }
     } catch (error: any) {
         handleServerNetworkError(error, dispatch);
         dispatch(appSetStatusAC({status: 'failed'}));
-        return thunkAPI.rejectWithValue('');
+        return thunkAPI.rejectWithValue(null);
     }
 });
-const changeTodolistTitleTC = createAsyncThunk<{ id: string, title: string }, { id: string, title: string }>
+const changeTodolistTitleTC = createAppAsyncThunk<{ id: string, title: string }, { id: string, title: string }>
 ('todolists/changeTodolistTitleTC', async ({id, title}, thunkAPI) => {
     let {dispatch} = thunkAPI;
     dispatch(changeTodolistEntityStatusAC({id, status: 'loading'}));
@@ -129,11 +132,11 @@ const changeTodolistTitleTC = createAsyncThunk<{ id: string, title: string }, { 
             return {id, title};
         } else {
             handleServerAppError(res.data, dispatch);
-            return thunkAPI.rejectWithValue({});
+            return thunkAPI.rejectWithValue(null);
         }
     } catch (error: any) {
         handleServerNetworkError(error, dispatch);
-        return thunkAPI.rejectWithValue({});
+        return thunkAPI.rejectWithValue(null);
     } finally {
         dispatch(appSetStatusAC({status: 'succeeded'}));
         dispatch(changeTodolistEntityStatusAC({id, status: 'idle'}));

@@ -1,8 +1,10 @@
-import {authApi} from '../../api/todolists-api';
-import {handleServerAppError, handleServerNetworkError} from '../../utils/error-utils';
+import {handleServerNetworkError} from '../../utils/handleServerNetworkError';
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {setIsLoggedInAC} from '../Login/login-reducer';
 import {appSetErrorAC, appSetStatusAC} from './ApplicationCommonActions';
+import {createAppAsyncThunk} from '../../utils/createAppAsyncThunk';
+import {authApi} from '../../api/auth-api';
+import {handleServerAppError} from '../../utils/handle-server-app-error';
 
 
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
@@ -39,8 +41,7 @@ export type InitialStateType = typeof initialState
 
 export const appReducer = slice.reducer;
 
-
-const appSetInitializedTC = createAsyncThunk('app/appSetInitializedTC', async (arg, {dispatch}) => {
+const appSetInitializedTC = createAppAsyncThunk('app/appSetInitializedTC', async (arg, {dispatch}) => {
     try {
         let res = await authApi.me();
         if (res.data.resultCode === 0) {
@@ -54,7 +55,7 @@ const appSetInitializedTC = createAsyncThunk('app/appSetInitializedTC', async (a
         dispatch(appSetStatusAC({status: 'succeeded'}));
     }
 });
-export const AppActions = {appSetInitializedTC, appSetStatusAC, appSetErrorAC};
+export const appActions = {appSetInitializedTC, appSetStatusAC, appSetErrorAC};
 export type AppReducerActionsType =
     ReturnType<typeof appSetStatusAC>
     | ReturnType<typeof appSetErrorAC>

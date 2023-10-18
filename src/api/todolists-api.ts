@@ -1,71 +1,4 @@
-import axios from 'axios';
 
-const settings = {
-    withCredentials: true,
-    headers: {
-        'API-KEY': 'cea6f080-ff85-4d71-9249-bb41cad72b89'
-    }
-};
-
-export const instance = axios.create({
-    baseURL: 'https://social-network.samuraijs.com/api/1.1/',
-    ...settings
-});
-
-
-export const todolistsApi = {
-    getTodolists() {
-        return instance.get<TodolistType[]>('todo-lists');
-    },
-    createTodolist(title: string) {
-        return instance.post<ResponseType<{ item: TodolistType }>>('todo-lists', {title: title});
-    },
-    deleteTodolist(id: string) {
-        return instance.delete<ResponseType>(`todo-lists/${id}`);
-    },
-    updateTodolist(id: string, title: string) {
-        return instance.put<ResponseType>(`todo-lists/${id}`, {title: title});
-    },
-    getTasks(todolistId: string) {
-        return instance.get<GetTasksResponse>(`todo-lists/${todolistId}/tasks`);
-    },
-    deleteTask(todolistId: string, taskId: string) {
-        return instance.delete<ResponseType>(`todo-lists/${todolistId}/tasks/${taskId}`);
-    },
-    createTask(todolistId: string, taskTitle: string) {
-        return instance.post<ResponseType<{ item: TaskType }>>(`todo-lists/${todolistId}/tasks`, {title: taskTitle});
-    },
-    updateTask(todolistId: string, taskId: string, model: UpdateTaskModelType) {
-        return instance.put<ResponseType<TaskType>>(`todo-lists/${todolistId}/tasks/${taskId}`, model);
-    }
-};
-
-export const authApi = {
-    auth(data: LoginParamsType) {
-        return instance.post<ResponseType<{ userId: number }>>('auth/login', data);
-    },
-    logOut() {
-        return instance.delete<ResponseType>('auth/login');
-    },
-    me(){
-        return instance.get<ResponseType<{id: number, email: string, login: string }>>('auth/me');
-    }
-};
-
-
-export type LoginParamsType = {
-    email: string
-    password: string
-    rememberMe: boolean
-    captcha?: string
-}
-
-export type TodolistType = {
-    id: string
-    title: string
-    addedDate: string
-    order: number
-}
 
 export type FieldErrorsType = { field: string, error: string };
 export type ResponseType<D = {}> = {
@@ -112,8 +45,3 @@ export type UpdateTaskModelType = {
     deadline: string
 }
 
-type GetTasksResponse = {
-    error: string | null
-    totalCount: number
-    items: TaskType[]
-}

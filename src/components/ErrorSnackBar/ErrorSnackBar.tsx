@@ -2,14 +2,14 @@ import * as React from 'react';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, {AlertProps} from '@mui/material/Alert';
 import {useSelector} from 'react-redux';
-import {AppActions, selectorsApp} from '../../features/Application';
+import {appActions, selectorsApp} from '../../features/Application';
 import {useActions} from '../../utils/redux-utils';
 
 
 export default function ErrorSnackBar() {
 
     let isError = useSelector(selectorsApp.selectError);
-    const {appSetErrorAC} = useActions(AppActions);
+    const {appSetErrorAC} = useActions(appActions);
 
     const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway') {
