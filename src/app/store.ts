@@ -1,6 +1,6 @@
 import {tasksReducer, todolistsReducer} from '../features/TodolistList';
 import {combineReducers} from 'redux';
-import {appReducer} from '../features/Application/app-reducer';
+import {appReducer} from '../features/Application';
 import {configureStore} from '@reduxjs/toolkit';
 import {loginReducer} from '../features/Login';
 

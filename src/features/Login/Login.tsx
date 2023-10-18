@@ -12,7 +12,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {Navigate} from 'react-router-dom';
 import {selectorIsLogin} from './loginSelectors';
 import {asyncLoginActions} from './index';
-import {LoginParamsType} from '../../api/auth-api';
+import {LoginParamsType} from '../../api';
 
 
 type ErrorsType = {

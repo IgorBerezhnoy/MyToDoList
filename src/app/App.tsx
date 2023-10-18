@@ -3,14 +3,14 @@ import './App.css';
 import {AppBar, Button, Container, IconButton, Toolbar, Typography} from '@material-ui/core';
 import {Menu} from '@material-ui/icons';
 import {CircularProgress, LinearProgress} from '@mui/material';
-import ErrorSnackBar from '../components/ErrorSnackBar/ErrorSnackBar';
 import {useSelector} from 'react-redux';
 import {appActions} from '../features/Application';
 import {Navigate, Route, Routes} from 'react-router-dom';
 import {asyncLoginActions, Login, selectors} from '../features/Login';
-import {selectorsApp} from '../features/Application/appSelectors';
+import {selectorsApp} from '../features/Application';
 import {TodolistsList} from '../features/TodolistList';
-import {useActions} from '../utils/redux-utils';
+import {useActions} from '../utils';
+import {ErrorSnackBar} from '../components';
 
 type PropsType = { demo?: boolean }
 

@@ -4,7 +4,7 @@ import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {clearDataAC} from '../TodolistList/Todolist/todolists-reducer';
 import {appSetStatusAC} from '../Application';
 import {createAppAsyncThunk} from '../../utils';
-import {authApi, LoginParamsType} from '../../api/auth-api';
+import {authApi, LoginParamsType} from '../../api';
 import {handleServerAppError} from '../../utils';
 
 export const slice = createSlice({

@@ -1,5 +1,5 @@
-import {instance} from './settings';
 import {ResponseType} from './todolists-api';
+import {instance} from './instance';
 
 export const authApi = {
   auth(data: LoginParamsType) {

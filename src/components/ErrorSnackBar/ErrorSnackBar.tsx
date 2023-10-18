@@ -3,10 +3,10 @@ import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, {AlertProps} from '@mui/material/Alert';
 import {useSelector} from 'react-redux';
 import {appActions, selectorsApp} from '../../features/Application';
-import {useActions} from '../../utils/redux-utils';
+import {useActions} from '../../utils';
 
 
-export default function ErrorSnackBar() {
+export  function ErrorSnackBar() {
 
     let isError = useSelector(selectorsApp.selectError);
     const {appSetErrorAC} = useActions(appActions);
