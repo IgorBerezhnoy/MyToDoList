@@ -1,10 +1,8 @@
-import {handleServerNetworkError} from '../../utils/handleServerNetworkError';
-import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import {createSlice} from '@reduxjs/toolkit';
 import {setIsLoggedInAC} from '../Login/login-reducer';
 import {appSetErrorAC, appSetStatusAC} from './ApplicationCommonActions';
-import {createAppAsyncThunk} from '../../utils/createAppAsyncThunk';
-import {authApi} from '../../api/auth-api';
-import {handleServerAppError} from '../../utils/handle-server-app-error';
+import {createAppAsyncThunk, handleServerNetworkError} from '../../utils';
+import {authApi} from '../../api';
 
 
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
@@ -41,20 +39,39 @@ export type InitialStateType = typeof initialState
 
 export const appReducer = slice.reducer;
 
-const appSetInitializedTC = createAppAsyncThunk('app/appSetInitializedTC', async (arg, {dispatch}) => {
+// const appSetInitializedTC = createAppAsyncThunk('app/appSetInitializedTC', async (arg, {dispatch}) => {
+//     try {
+//         let res = await authApi.me();
+//         if (res.data.resultCode === 0) {
+//             dispatch(setIsLoggedInAC({isLoggedIn: true}));
+//         } else {
+//             // handleServerAppError(res.data, dispatch);
+//         }
+//     } catch (error) {
+//         handleServerNetworkError(error, dispatch);
+//     } finally {
+//         dispatch(appSetStatusAC({status: 'succeeded'}));
+//     }
+// });
+//TODO проверь всё
+export const appSetInitializedTC = createAppAsyncThunk<{ isInitialized: true }, undefined>('app/initializeAppTC', async (arg, thunkAPI) => {
+    let {dispatch, rejectWithValue} = thunkAPI;
     try {
         let res = await authApi.me();
         if (res.data.resultCode === 0) {
             dispatch(setIsLoggedInAC({isLoggedIn: true}));
         } else {
-            handleServerAppError(res.data, dispatch);
+            // handleServerAppError(res.data, dispatch);
+            return rejectWithValue(null);
         }
-    } catch (error: any) {
+    } catch (error) {
         handleServerNetworkError(error, dispatch);
+        return rejectWithValue(null);
     } finally {
-        dispatch(appSetStatusAC({status: 'succeeded'}));
+        return {isInitialized: true};
     }
 });
+
 export const appActions = {appSetInitializedTC, appSetStatusAC, appSetErrorAC};
 export type AppReducerActionsType =
     ReturnType<typeof appSetStatusAC>
