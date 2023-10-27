@@ -1,8 +1,9 @@
 import {tasksReducer, todolistsReducer} from '../features/TodolistList';
-import {combineReducers} from 'redux';
+import {AnyAction, combineReducers} from 'redux';
 import {appReducer} from '../features/Application';
 import {configureStore} from '@reduxjs/toolkit';
 import {loginReducer} from '../features/Login';
+import {ThunkDispatch} from 'redux-thunk';
 
 // объединяя reducer-ы с помощью combineReducers,
 // мы задаём структуру нашего единственного объекта-состояния
@@ -24,9 +25,12 @@ export const store = configureStore({
 
 
 // определить автоматически тип всего объекта состояния
-export type AppRootStateType = ReturnType<typeof rootReducer>
 export type RootReducerType = typeof rootReducer
 
+export type AppRootStateType = ReturnType<typeof store.getState>;
+
+
+export type AppDispatch = ThunkDispatch<AppRootStateType, unknown, AnyAction>;
 
 // а это, чтобы можно было в консоли браузера обращаться к store в любой момент
 // @ts-ignore

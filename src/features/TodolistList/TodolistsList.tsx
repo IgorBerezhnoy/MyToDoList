@@ -11,7 +11,7 @@ import {todolistActions} from './index';
 import {selectorTodolists} from './Todolist/todolist-selectors';
 import {selectorTasks} from './Todolist/Task/tasks-selectors';
 import {AppRootStateType} from '../../app/store';
-import {useActions} from '../../utils/redux-utils';
+import {useActions} from '../../hooks/useActions';
 
 export type TasksStateType = {
     [key: string]: Array<TaskType>

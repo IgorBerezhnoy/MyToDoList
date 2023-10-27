@@ -8,7 +8,7 @@ import {TaskStatuses, TaskType} from '../../../api/todolists-api';
 import {FilterValuesType, TodolistDomainType} from './todolists-reducer';
 import {taskAsyncActions, todolistActions} from '../index';
 import {Paper, PropTypes} from '@mui/material';
-import {useActions} from '../../../utils/redux-utils';
+import {useActions} from '../../../hooks/useActions';
 
 type PropsType = {
     todolist: TodolistDomainType

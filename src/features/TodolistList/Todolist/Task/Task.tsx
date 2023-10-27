@@ -4,7 +4,7 @@ import {EditableSpan} from '../../../../components/EditableSpan/EditableSpan';
 import {Delete} from '@material-ui/icons';
 import {TaskStatuses, TaskType} from '../../../../api/todolists-api';
 import {taskAsyncActions} from './tasks-reducer';
-import {useActions} from '../../../../utils/redux-utils';
+import {useActions} from '../../../../hooks/useActions';
 
 type TaskPropsType = {
     task: TaskType
