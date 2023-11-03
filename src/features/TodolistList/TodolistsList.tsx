@@ -21,6 +21,9 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
 
   const {addTodolist, fetchTodolistsTC} = useActions(todolistActions);
 
+  const addTodolistCallBack = (title: string) => {
+    return addTodolist(title).unwrap();
+  };
   const todolists = useSelector(selectorTodolists);
   const tasks = useSelector<AppRootStateType, TasksStateType>(selectorTasks);
 
@@ -35,8 +38,8 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
   }
 
   return (<><Grid container style={{padding: '20px'}}>
-    <AddItemForm addItem={addTodolist}/>
-  </Grid>
+    <AddItemForm addItem={addTodolistCallBack}/>
+  </Grid>a
     <Grid container spacing={3} style={{flexWrap: 'nowrap', overflowX: 'scroll'}}>
       {/*TODO Текущий вариант не очень Переделать потом*/}
       {/*TODO Fix inline Style  */}

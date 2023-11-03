@@ -81,8 +81,8 @@ const addTask = createAppAsyncThunk<{ task: TaskType }, { title: string, todolis
       dispatch(appSetStatusAC({status: 'failed'}));
       return {task: res.data.data.item};
     } else {
-      handleServerAppError(res.data, dispatch);
-      return thunkAPI.rejectWithValue(null);
+      handleServerAppError(res.data, dispatch, false);
+      return thunkAPI.rejectWithValue(res.data);
     }
   });
 });

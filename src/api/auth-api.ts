@@ -1,15 +1,16 @@
-import {ResponseType} from './todolists-api';
+
 import {instance} from './instance';
+import {BaseResponseType} from '../types';
 
 export const authApi = {
   auth(data: LoginParamsType) {
-    return instance.post<ResponseType<{ userId: number }>>('auth/login', data);
+    return instance.post<BaseResponseType<{ userId: number }>>('auth/login', data);
   },
   logOut() {
-    return instance.delete<ResponseType>('auth/login');
+    return instance.delete<BaseResponseType>('auth/login');
   },
   me() {
-    return instance.get<ResponseType<{ id: number, email: string, login: string }>>('auth/me');
+    return instance.get<BaseResponseType<{ id: number, email: string, login: string }>>('auth/me');
   }
 };
 

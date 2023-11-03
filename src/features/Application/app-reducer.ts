@@ -1,4 +1,4 @@
-import {createSlice} from '@reduxjs/toolkit';
+import {createSlice, isFulfilled, isPending, isRejected} from '@reduxjs/toolkit';
 import {setIsLoggedInAC} from '../Login/login-reducer';
 import {appSetErrorAC, appSetStatusAC} from './ApplicationCommonActions';
 import {createAppAsyncThunk, handleServerAppError, handleServerNetworkError} from '../../utils';
@@ -26,6 +26,15 @@ const slice = createSlice({
       })
       .addCase(appSetErrorAC, (state, action) => {
         state.error = action.payload.error;
+      })
+      .addMatcher(isPending, (state, action) => {
+        state.status = 'loading';
+      })
+      .addMatcher(isRejected, (state, action) => {
+        state.status = 'failed';
+      })
+      .addMatcher(isFulfilled, (state, action) => {
+        state.status = 'succeeded';
       });
   }
 });

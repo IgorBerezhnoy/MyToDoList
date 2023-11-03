@@ -19,7 +19,7 @@ export const Todolist = React.memo(function ({demo = false, todolist, tasks, ...
   }, []);
 
   const addTaskCallback = useCallback((title: string) => {
-    return addTask({title, todolistId: todolist.id});
+    return addTask({title, todolistId: todolist.id}).unwrap();
   }, [todolist.id]);
 
   {/*  TODO inline style*/
