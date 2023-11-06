@@ -1,8 +1,8 @@
 import React from 'react';
 import {action} from '@storybook/addon-actions';
-import {Task} from '../features/TodolistList/Todolist/Task/Task';
-import {TaskPriorities, TaskStatuses} from '../api/todolists-api';
+import {Task} from '../features/TodolistList/ui/Todolist/Tasks/Task/Task';
 import {ReduxStoreProviderDecorator} from './decorators/ReduxStoreProviderDecorator';
+import {TaskPriorities, TaskStatuses} from '../common/enums';
 
 export default {
     title: 'Task Stories',

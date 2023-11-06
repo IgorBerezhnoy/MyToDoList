@@ -6,11 +6,11 @@ import {CircularProgress, LinearProgress} from '@mui/material';
 import {useSelector} from 'react-redux';
 import {appActions} from '../features/Application';
 import {Navigate, Route, Routes} from 'react-router-dom';
-import {asyncLoginActions, Login, selectors} from '../features/Login';
+import {asyncLoginActions, Login, selectors} from '../features/auth';
 import {selectorsApp} from '../features/Application';
 import {TodolistsList} from '../features/TodolistList';
-import {useActions} from '../utils';
-import {ErrorSnackBar} from '../components';
+import {useActions} from '../common/utils';
+import {ErrorSnackBar} from '../common/components';
 
 type PropsType = { demo?: boolean }
 

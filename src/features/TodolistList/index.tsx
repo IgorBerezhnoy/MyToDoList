@@ -1,4 +1,4 @@
-export {todolistsReducer, todolistActions, todolistAsyncActions} from './Todolist/todolists-reducer';
-export {tasksReducer, taskAsyncActions,} from './Todolist/Task/tasks-reducer';
-export {TodolistsList} from './TodolistsList';
+export {todolistsSlice, todolistActions, todolistAsyncActions} from './model/todolists/todolistsSlice';
+export {tasksReducer, taskAsyncActions,} from './model/tasks/tasks-reducer';
+export {TodolistsList} from './ui/TodolistsList';
 

@@ -10,7 +10,7 @@ import React, {useReducer, useState} from 'react';
 //     changeTodolistFilterAC,
 //     changeTodolistTitleAC, FilterValuesType,
 //     removeTodolistAC,
-//     todolistsReducer
+//     todolistsSlice
 // } from './state/todolists-reducer'
 // import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from './state/tasks-reducer';
 // import {TaskPriorities, TaskStatuses, TaskType} from './api/todolists-api'
@@ -24,7 +24,7 @@ import React, {useReducer, useState} from 'react';
 //     let todolistId1 = v1();
 //     let todolistId2 = v1();
 //
-//     let [todolists, dispatchToTodolists] = useReducer(todolistsReducer, [
+//     let [todolists, dispatchToTodolists] = useReducer(todolistsSlice, [
 //         {id: todolistId1, title: "What to learn", filter: "all",  addedDate: '',
 //             order: 0},
 //         {id: todolistId2, title: "What to buy", filter: "all",  addedDate: '',
@@ -98,7 +98,7 @@ import React, {useReducer, useState} from 'react';
 //                     <Typography variant="h6">
 //                         News
 //                     </Typography>
-//                     <Button color="inherit">Login</Button>
+//                     <Button color="inherit">auth</Button>
 //                 </Toolbar>
 //             </AppBar>
 //             <Container fixed>
