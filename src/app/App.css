@@ -19,3 +19,19 @@
     opacity: 0.5;
 }
 
+.circularProgress {
+    position: fixed;
+    top: 40%;
+    left: 47%;
+}
+
+.toolbar {
+    position: relative
+}
+
+.toolbar__buttons {
+    position: absolute;
+    right: 30px;
+    display: flex;
+    align-items: center;
+}
