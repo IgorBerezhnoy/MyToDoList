@@ -1,9 +1,10 @@
 import {todolistActions, TodolistDomainType} from '../../model/todolists/todolistsSlice';
 import {useActions} from '../../../../common/hooks/useActions';
-import {IconButton} from '@material-ui/core';
-import {Delete} from '@material-ui/icons';
+
 import {EditableSpan} from '../../../../common/components';
 import React, {useCallback} from 'react';
+import {IconButton} from '@mui/material';
+import {Delete} from '@mui/icons-material';
 
 export let TodolistTitle = ({todolist}: { todolist: TodolistDomainType }) => {
   const {id, title} = todolist;
