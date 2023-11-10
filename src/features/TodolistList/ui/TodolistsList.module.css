@@ -1,0 +1,14 @@
+.gridContainer {
+    padding: 20px
+}
+
+.todolistsWrapper {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+
+}
+
+/*.todolistsWrapper::-webkit-scrollbar {*/
+/*    width: 0;*/
+/*}*/

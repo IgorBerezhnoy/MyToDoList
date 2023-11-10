@@ -3,7 +3,6 @@ import "./App.css";
 import {
   AppBar,
   CircularProgress,
-  Container,
   createTheme,
   CssBaseline,
   IconButton,
@@ -70,7 +69,7 @@ function App({ demo = false }: PropsType) {
           </Toolbar>
           {appStatus === "loading" && <LinearProgress />}
         </AppBar>
-        <Container fixed>
+        <div className={"allComponents"}>
           <ErrorSnackBar />
           <Routes>
             <Route path={"/"} element={<TodolistsList demo={demo} />} />
@@ -78,7 +77,7 @@ function App({ demo = false }: PropsType) {
             <Route path={"/404"} element={<h1>404: PAGE NOT FOUND</h1>} />
             <Route path={"*"} element={<Navigate to={"/404"} />} />
           </Routes>
-        </Container>
+        </div>
       </div>
     </ThemeProvider>
   );

@@ -1,0 +1,9 @@
+.todolist {
+    padding: 10px;
+    width: 300px;
+    position: relative;
+    margin: 20px 10px ;
+}
+.filterTaskButton{
+    padding-top: 10px
+}

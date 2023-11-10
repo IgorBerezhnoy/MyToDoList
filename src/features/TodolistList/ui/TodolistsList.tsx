@@ -11,6 +11,7 @@ import { selectorTasks } from "../model/tasks/tasks-selectors";
 import { AppRootStateType } from "../../../app";
 import { useActions } from "../../../common/hooks";
 import { Grid } from "@mui/material";
+import s from "./TodolistsList.module.css";
 
 export type TasksStateType = Record<string, TaskType[]>;
 
@@ -39,13 +40,10 @@ export const TodolistsList: React.FC<PropsType> = ({ demo = false }) => {
 
   return (
     <>
-      <Grid container style={{ padding: "20px" }}>
+      <Grid container className={s.gridContainer}>
         <AddItemForm addItem={addTodolistCallBack} />
       </Grid>
-      <div>
-        {/*TODO Текущий вариант не очень Переделать потом*/}
-        {/*TODO Fix inline Style  */}
-        {/*<Grid container spacing={3}}>*/}
+      <div className={s.todolistsWrapper}>
         {todolists.map((tl) => {
           let allTodolistTasks = tasks[tl.id];
           return (
